@@ -1,0 +1,11 @@
+{
+  "name": "legit-scheduler",
+  "version": "0.0.1",
+  "description": "A React drag and drop scheduler component",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Darin Haener <dphaener@gmail.com> (https://github.com/dphaener)",
+  "license": "MIT"
+}
