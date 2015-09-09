@@ -11,10 +11,19 @@ describe('RangeDate', () => {
       assert(+(new Date(2015, 8, 1)) === +date2.value());
     });
 
-    it('should set the date to now if null is passed in', () => {
+    it('should set the date to now if undefined is passed in', () => {
       let now = new Date();
       timekeeper.freeze(now);    
       let date = new RangeDate();
+      
+      assert(+now === +date.value());
+      timekeeper.reset();
+    });
+
+    it('should set the date to now if null is passed in', () => {
+      let now = new Date();
+      timekeeper.freeze(now);    
+      let date = new RangeDate(null);
       
       assert(+now === +date.value());
       timekeeper.reset();
@@ -32,12 +41,12 @@ describe('RangeDate', () => {
   describe('#advance', () => {
     it('should properly advance the date by days', () => {
       let date = new RangeDate(new Date(2015, 8, 1));
-      assert.equal(+(new Date(2015, 8, 15)), +date.advance('days', 14));
+      assert.equal(+(new Date(2015, 8, 15)), +date.advance('days', 14).value());
     });
 
     it('should properly advance the date by weeks', () => {
       let date = new RangeDate(new Date(2015, 8, 1));
-      assert.equal(+(new Date(2015, 8, 15)), +date.advance('weeks', 2));
+      assert.equal(+(new Date(2015, 8, 15)), +date.advance('weeks', 2).value());
     });
 
     it('should not mutate the original date value', () => {

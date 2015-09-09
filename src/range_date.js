@@ -27,6 +27,6 @@ export default class RangeDate {
     let copy = new Date(this.date),
         newDate = copy.setDate(copy.getDate() + (RangeDate.incrementMap[increment] * amount));
 
-    return new Date(newDate);
+    return new RangeDate(new Date(newDate));
   }
 }

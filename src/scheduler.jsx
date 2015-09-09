@@ -28,8 +28,8 @@ export default class Scheduler extends React.Component {
     return (
       <div>
         <button onClick={this.previousClicked}>&lsaquo;</button>
-        <button onClick={this.nextClicked}>&rsaquo;</button> 
         { this.range.toString() }
+        <button onClick={this.nextClicked}>&rsaquo;</button> 
       </div>
     );
   }
