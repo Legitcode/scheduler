@@ -11,4 +11,11 @@ export default class DateRange {
   toString() {
     return `${this.from.toString()} - ${this.to.toString()}`;
   }
+
+  advance(increment, amount) {
+    let from = this.from.advance(increment, amount),
+        to = this.to.advance(increment, amount);
+
+    return new DateRange(from, to);
+  }
 }

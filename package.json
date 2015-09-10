@@ -12,8 +12,8 @@
   "author": "Darin Haener <dphaener@gmail.com> (https://github.com/dphaener)",
   "license": "MIT",
   "dependencies": {
-    "alt": "0.17.3",
-    "immutable": "3.7.5",
+    "alt": "^0.17.3",
+    "immutable": "^3.7.5",
     "react": ">=0.13",
     "react-dnd": "^1.1.5",
     "strftime": "^0.9.2"

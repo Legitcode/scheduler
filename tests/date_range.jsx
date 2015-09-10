@@ -21,4 +21,12 @@ describe('DateRange', () => {
       assert.equal("September  1, 2015 - October  1, 2015", range.toString());
     });
   });
+
+  describe('#advance', () => {
+    it('should advance the date range', () => {
+      let range = new DateRange("2015-09-01", "2015-09-15");
+
+      assert.equal("September 14, 2015 - September 28, 2015", range.advance('weeks', 2).toString());
+    });
+  });
 });

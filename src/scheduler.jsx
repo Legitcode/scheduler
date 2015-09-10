@@ -1,6 +1,10 @@
 import React from 'react';
 import { DragDropContext } from 'react-dnd';
 import HTML5Backend from 'react-dnd/modules/backends/HTML5';
+import AltContainer from 'alt/AltContainer';
+import ScheduleStore from './schedule_store';
+import ScheduleActions from './schedule_actions';
+import SchedulerWrapper from './scheduler_wrapper';
 import RangeDate from './range_date';
 import DateRange from './date_range';
 
@@ -18,19 +22,23 @@ export default class Scheduler extends React.Component {
     to: new RangeDate().advance('weeks', 2).toString()
   }
 
-  constructor(props) {
-    super(props);
-
-    this.range = new DateRange(this.props.from, this.props.to); 
+  componentWillMount() {
+    ScheduleActions.setInitialState({ range: new DateRange(this.props.from, this.props.to) });
   }
 
   render() {
     return (
-      <div>
-        <button onClick={this.previousClicked}>&lsaquo;</button>
-        { this.range.toString() }
-        <button onClick={this.nextClicked}>&rsaquo;</button> 
-      </div>
+      <AltContainer
+        stores={{ScheduleStore}}
+        actions={{ScheduleActions}}
+        transform={({ ScheduleStore, ScheduleActions }) => {
+          var store = ScheduleStore.toJS();
+
+          return {...store, ScheduleActions}
+        }}>
+        
+        <SchedulerWrapper />
+      </AltContainer>
     );
   }
 }

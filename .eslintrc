@@ -16,6 +16,7 @@
     "quotes": 0,
     "no-console": 0,
     "no-trailing-spaces": 0,
+    "no-shadow": 0,
     "curly": 0,
     "camelcase": 0,
     "react/jsx-boolean-value": 1,
