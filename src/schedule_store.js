@@ -4,7 +4,6 @@ import Immutable from 'immutable';
 import ScheduleActions from './schedule_actions';
 
 @immutable
-
 class ScheduleStore {
   constructor() {
     this.bindActions(ScheduleActions);

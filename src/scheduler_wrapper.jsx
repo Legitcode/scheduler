@@ -2,8 +2,7 @@ import React from 'react';
 
 export default class SchedulerWrapper extends React.Component {
   static propTypes = {
-    range: React.PropTypes.object,
-    ScheduleActions: React.PropTypes.object
+    range: React.PropTypes.object
   }
 
   previousClicked = (ev) => {
@@ -18,13 +17,17 @@ export default class SchedulerWrapper extends React.Component {
     this.props.ScheduleActions.changeRange({ 'weeks': 2 });
   }
 
+  changeRange(props) {
+    let increment = Object.keys(props)[0],
+        amount = props[increment],
+        range = this.state.get('range').advance(increment, amount),
+        newProps = Immutable.fromJS({ range: range });
+
+    this.setState(this.state.merge(newProps));
+  }
+
   render() {
     return (
-      <div>
-        <button onClick={this.previousClicked}>&lsaquo;</button>
-        { this.props.range.toString() }
-        <button onClick={this.nextClicked}>&rsaquo;</button> 
-      </div>
     );
   }
 }

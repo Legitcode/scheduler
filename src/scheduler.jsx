@@ -1,44 +1,55 @@
-import React from 'react';
-import { DragDropContext } from 'react-dnd';
-import HTML5Backend from 'react-dnd/modules/backends/HTML5';
-import AltContainer from 'alt/AltContainer';
-import ScheduleStore from './schedule_store';
-import ScheduleActions from './schedule_actions';
-import SchedulerWrapper from './scheduler_wrapper';
-import RangeDate from './range_date';
-import DateRange from './date_range';
+import React from 'react'
+import RangeDate from './range_date'
+import DateRange from './date_range'
+import Layout from './layout'
 
-@DragDropContext(HTML5Backend)
 export default class Scheduler extends React.Component {
   static propTypes = {
-    resources: React.PropTypes.array,
+    resources: React.PropTypes.array.isRequired,
+    events: React.PropTypes.array.isRequired,
     from: React.PropTypes.string,
     to: React.PropTypes.string
   }
 
   static defaultProps = {
-    resources: [],
     from: new RangeDate().toString(),
     to: new RangeDate().advance('weeks', 2).toString()
   }
 
-  componentWillMount() {
-    ScheduleActions.setInitialState({ range: new DateRange(this.props.from, this.props.to) });
+  constructor(props) {
+    super(props)
+    this.state = { range: new DateRange(props.from, props.to) }
+  }
+
+  previousClicked = (ev) => {
+    ev.preventDefault()
+    this.changeRange({ 'weeks': -2 })
+  }
+
+  nextClicked = (ev) => {
+    ev.preventDefault()
+    this.changeRange({ 'weeks': 2 })
+  }
+
+  changeRange(props) {
+    let increment = Object.keys(props)[0],
+        amount = props[increment],
+        range = this.state.range.advance(increment, amount)
+
+    this.setState({ range })
   }
 
   render() {
-    return (
-      <AltContainer
-        stores={{ScheduleStore}}
-        actions={{ScheduleActions}}
-        transform={({ ScheduleStore, ScheduleActions }) => {
-          var store = ScheduleStore.toJS();
+    const { range } = this.state,
+          { resources, events } = this.props
 
-          return {...store, ScheduleActions}
-        }}>
-        
-        <SchedulerWrapper />
-      </AltContainer>
-    );
+    return (
+      <div>
+        <button onClick={this.previousClicked}>&lsaquo;</button>
+        { range.toString() }
+        <button onClick={this.nextClicked}>&rsaquo;</button>
+        <Layout resources={resources} range={range} events={events} />
+      </div>
+    )
   }
 }

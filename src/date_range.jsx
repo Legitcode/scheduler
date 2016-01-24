@@ -18,4 +18,16 @@ export default class DateRange {
 
     return new DateRange(from, to);
   }
+
+  map(func) {
+    let current = this.from,
+        dates = []
+
+    while (current.value() < this.to.value()) {
+      dates.push(func(current))
+      current = current.advance('days', 1)
+    }
+
+    return dates
+  }
 }
