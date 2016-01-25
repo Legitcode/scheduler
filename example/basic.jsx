@@ -2,32 +2,29 @@ import React from 'react'
 import { render } from 'react-dom'
 import Scheduler from '../src/scheduler'
 
-var resources = ['One', 'Two'],
+var resources = ['One', 'Two', 'Three', 'Four'],
     events = [
       {
+        id: 'foobar',
         title: 'Do this',
-        x: 2,
-        y: 0,
-        w: 2,
-        h: 1,
-        i: 0
+        startDate: '2016-01-24',
+        duration: 5,
+        resource: 'One'
       },
       {
+        id: 'barfoo',
         title: 'Do that',
-        x: 0,
-        y: 1,
-        w: 2,
-        h: 1,
-        i: 1
+        startDate: '2016-01-26',
+        duration: 4,
+        resource: 'Two'
       },
       {
-        title: 'Static',
-        x: 0,
-        y: 0,
-        w: 2,
-        h: 1,
-        i: 2,
-        static: true
+        id: 'barfoobaz',
+        title: 'I am disabled',
+        startDate: '2016-01-27',
+        duration: 7,
+        resource: 'Three',
+        disabled: true
       }
     ]
 

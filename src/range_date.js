@@ -1,4 +1,4 @@
-import strftime from 'strftime';
+import strftime from 'strftime'
 
 export default class RangeDate {
   static incrementMap = {
@@ -9,24 +9,28 @@ export default class RangeDate {
 
   constructor(date = null) {
     if (date) {
-      this.date = date instanceof RangeDate ? date.value() : new Date(date);
+      this.date = date instanceof RangeDate ? date.value() : new Date(date)
     } else {
-      this.date = new Date();
+      this.date = new Date()
     }
   }
 
   toString() {
-    return strftime('%B %e, %Y', this.date);
+    return strftime('%B %e, %Y', this.date)
+  }
+
+  toRef() {
+    return strftime('%Y-%m-%d', this.date)
   }
 
   value() {
-    return this.date;
+    return this.date
   }
 
   advance(increment, amount) {
     let copy = new Date(this.date),
-        newDate = copy.setDate(copy.getDate() + (RangeDate.incrementMap[increment] * amount));
+        newDate = copy.setDate(copy.getDate() + (RangeDate.incrementMap[increment] * amount))
 
-    return new RangeDate(new Date(newDate));
+    return new RangeDate(new Date(newDate))
   }
 }

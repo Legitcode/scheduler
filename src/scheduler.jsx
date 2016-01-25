@@ -1,7 +1,14 @@
+// Vendor Libraries
 import React from 'react'
+import { Provider } from 'react-redux'
+import { createStore } from 'redux'
+import { fromJS } from 'immutable'
+
+// Local Libraries
 import RangeDate from './range_date'
 import DateRange from './date_range'
 import Layout from './layout'
+import reducer from './reducer'
 
 export default class Scheduler extends React.Component {
   static propTypes = {
@@ -19,6 +26,7 @@ export default class Scheduler extends React.Component {
   constructor(props) {
     super(props)
     this.state = { range: new DateRange(props.from, props.to) }
+    this.store = createStore(reducer, fromJS({ events: props.events }))
   }
 
   previousClicked = (ev) => {
@@ -44,12 +52,14 @@ export default class Scheduler extends React.Component {
           { resources, events } = this.props
 
     return (
-      <div>
-        <button onClick={this.previousClicked}>&lsaquo;</button>
-        { range.toString() }
-        <button onClick={this.nextClicked}>&rsaquo;</button>
-        <Layout resources={resources} range={range} events={events} />
-      </div>
+      <Provider store={this.store}>
+        <div>
+          <button onClick={this.previousClicked}>&lsaquo;</button>
+          { range.toString() }
+          <button onClick={this.nextClicked}>&rsaquo;</button>
+          <Layout resources={resources} range={range} events={events} />
+        </div>
+      </Provider>
     )
   }
 }

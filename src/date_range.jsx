@@ -30,4 +30,13 @@ export default class DateRange {
 
     return dates
   }
+
+  forEach(func) {
+    let current = this.from
+
+    while (current.value() < this.to.value()) {
+      func(current)
+      current = current.advance('days', 1)
+    }
+  }
 }
