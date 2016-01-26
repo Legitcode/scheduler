@@ -15,7 +15,8 @@ export default class Scheduler extends React.Component {
     resources: React.PropTypes.array.isRequired,
     events: React.PropTypes.array.isRequired,
     from: React.PropTypes.string,
-    to: React.PropTypes.string
+    to: React.PropTypes.string,
+    range: React.PropTypes.object
   }
 
   static defaultProps = {

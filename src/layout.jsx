@@ -1,6 +1,5 @@
 // Vendor Libraries
 import React from 'react'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 
 // Local Libraries

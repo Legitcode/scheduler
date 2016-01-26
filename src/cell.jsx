@@ -6,10 +6,10 @@ import { DropTarget } from 'react-dnd'
 import { ItemTypes } from './constants'
 
 const cellTarget = {
-  drop(props, monitor) {
+  drop(props) {
     return props
   },
-  canDrop(props, monitor) {
+  canDrop(props) {
     return !props.children
   }
 }
@@ -29,7 +29,7 @@ export default class Cell extends React.Component {
   }
 
   render() {
-    const { children, connectDropTarget, isOver } = this.props
+    const { children, connectDropTarget } = this.props
 
     return (
       connectDropTarget(

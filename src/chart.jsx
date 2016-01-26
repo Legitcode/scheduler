@@ -9,6 +9,12 @@ import Cell from './cell'
 
 @DragDropContext(HTML5Backend)
 export default class Chart extends React.Component {
+  static propTypes = {
+    events: React.PropTypes.array.isRequired,
+    resources: React.PropTypes.array.isRequired,
+    range: React.PropTypes.object.isRequired
+  }
+
   renderEvent(resource, date) {
     const currentEvent = this.props.events.find(event => (
       event.resource === resource && event.startDate === date
