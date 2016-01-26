@@ -9,14 +9,16 @@ var resources = ['One', 'Two', 'Three', 'Four'],
         title: 'Do this',
         startDate: '2016-01-25',
         duration: 5,
-        resource: 'One'
+        resource: 'One',
+        uuid: 'foobar'
       },
       {
         id: 'barfoo',
         title: 'Do that',
         startDate: '2016-01-26',
         duration: 4,
-        resource: 'Two'
+        resource: 'Two',
+        uuid: 'barfoo'
       },
       {
         id: 'barfoobaz',
@@ -24,7 +26,8 @@ var resources = ['One', 'Two', 'Three', 'Four'],
         startDate: '2016-01-27',
         duration: 7,
         resource: 'Three',
-        disabled: true
+        disabled: true,
+        uuid: 'barfoobaz'
       }
     ]
 

@@ -14,6 +14,10 @@ div.chart {
   flex-wrap: wrap;
 }
 
-div.header-cell {
-  
+div.event-box {
+  span.resizer {
+    &:hover {
+      cursor: e-resize;
+    }
+  }
 }

@@ -4,6 +4,7 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 // Local Libraries
+import EventBox from './event_box'
 import Event from './event'
 import Cell from './cell'
 
@@ -20,7 +21,11 @@ export default class Chart extends React.Component {
       event.resource === resource && event.startDate === date
     ))
 
-    if (currentEvent) return <Event {...currentEvent} />
+    if (currentEvent) return (
+      <EventBox {...currentEvent}>
+        <Event {...currentEvent} />
+      </EventBox>
+    )
   }
 
   renderCell(resource, date) {

@@ -40,31 +40,21 @@ class Event extends React.Component {
     title: PropTypes.string.isRequired,
     startDate: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
-    resource: PropTypes.string.isRequired
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.state = { cellWidth: 0 }
-  }
-
-  componentDidMount() {
-    const cellWidth = findDOMNode(this).getBoundingClientRect().width
-
-    this.setState({ cellWidth: cellWidth })
+    resource: PropTypes.string.isRequired,
+    width: PropTypes.number
   }
 
   render() {
-    const { connectDragSource, isDragging, title, duration } = this.props,
-          { cellWidth } = this.state,
-          width = (duration * cellWidth) === 0 ? '100%' : `${duration * cellWidth + (duration * 2) - 2}px`,
+    const { connectDragSource, isDragging, title, duration, width } = this.props,
           opacity = isDragging ? 0 : 1
 
+    console.log(width)
     return (
       isDragging ? null :
         connectDragSource(
-          <div className='event' style={{ width: width, position: 'relative', top: 0, left: 0, opacity }}>{title}</div>
+          <div className='event' style={{ width: width, position: 'relative', top: 0, left: 0 }}>
+            {title}
+          </div>
         )
     )
   }
