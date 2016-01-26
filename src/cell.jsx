@@ -8,6 +8,9 @@ import { ItemTypes } from './constants'
 const cellTarget = {
   drop(props, monitor) {
     return props
+  },
+  canDrop(props, monitor) {
+    return !props.children
   }
 }
 

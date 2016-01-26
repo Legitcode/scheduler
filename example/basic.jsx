@@ -7,7 +7,7 @@ var resources = ['One', 'Two', 'Three', 'Four'],
       {
         id: 'foobar',
         title: 'Do this',
-        startDate: '2016-01-24',
+        startDate: '2016-01-25',
         duration: 5,
         resource: 'One'
       },
