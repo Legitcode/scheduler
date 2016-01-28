@@ -3,7 +3,7 @@ import { render } from 'react-dom'
 import Scheduler from '../src/scheduler'
 import RangeDate from '../src/range_date'
 
-var resources = ['One', 'Two', 'Three', 'Four'],
+var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'],
     today = new RangeDate(new Date()),
     events = [
       {
@@ -11,16 +11,14 @@ var resources = ['One', 'Two', 'Three', 'Four'],
         title: 'Do this',
         startDate: today.advance('days', 1).toRef(),
         duration: 5,
-        resource: 'One',
-        uuid: 'foobar'
+        resource: 'One'
       },
       {
         id: 'barfoo',
         title: 'Do that',
         startDate: today.advance('days', 3).toRef(),
         duration: 4,
-        resource: 'Two',
-        uuid: 'barfoo'
+        resource: 'Two'
       },
       {
         id: 'barfoobaz',
@@ -28,8 +26,14 @@ var resources = ['One', 'Two', 'Three', 'Four'],
         startDate: today.advance('days', 2).toRef(),
         duration: 7,
         resource: 'Three',
-        disabled: true,
-        uuid: 'barfoobaz'
+        disabled: true
+      },
+      {
+        id: 'foobah',
+        title: 'Do another thing',
+        startDate: today.advance('days', 6).toRef(),
+        duration: 14,
+        resource: 'Seven'
       }
     ]
 

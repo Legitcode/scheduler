@@ -10,7 +10,7 @@ import Cell from './cell'
 
 // Styles
 const cellWrapperStyles = {
-  width: '3.57%',
+  width: '3.66%',
   margin: '0 -1px -1px 0'
 }
 
@@ -53,7 +53,7 @@ export default class Chart extends React.Component {
     })
 
     return (
-      <div className='chart' style={{ flexBasis: '95%' }}>
+      <div className='chart' style={{ flexBasis: '95%', overflow: 'hidden', borderBottom: 'solid 1px darkgrey' }}>
         { cells }
       </div>
     )

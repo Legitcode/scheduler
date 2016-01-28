@@ -7,7 +7,7 @@ import Chart from './chart'
 
 // Styles
 const headerStyles = {
-  width: '3.57%',
+  width: '3.66%',
   border: 'solid 1px darkgrey',
   margin: '0 -1px -1px 0',
   padding: '0 4px',
