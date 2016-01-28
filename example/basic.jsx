@@ -1,13 +1,15 @@
 import React from 'react'
 import { render } from 'react-dom'
 import Scheduler from '../src/scheduler'
+import RangeDate from '../src/range_date'
 
 var resources = ['One', 'Two', 'Three', 'Four'],
+    today = new RangeDate(new Date()),
     events = [
       {
         id: 'foobar',
         title: 'Do this',
-        startDate: '2016-01-25',
+        startDate: today.advance('days', 1).toRef(),
         duration: 5,
         resource: 'One',
         uuid: 'foobar'
@@ -15,7 +17,7 @@ var resources = ['One', 'Two', 'Three', 'Four'],
       {
         id: 'barfoo',
         title: 'Do that',
-        startDate: '2016-01-26',
+        startDate: today.advance('days', 3).toRef(),
         duration: 4,
         resource: 'Two',
         uuid: 'barfoo'
@@ -23,7 +25,7 @@ var resources = ['One', 'Two', 'Three', 'Four'],
       {
         id: 'barfoobaz',
         title: 'I am disabled',
-        startDate: '2016-01-27',
+        startDate: today.advance('days', 2).toRef(),
         duration: 7,
         resource: 'Three',
         disabled: true,

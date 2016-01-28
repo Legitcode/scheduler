@@ -4,16 +4,6 @@ let defaultState = Map({
   events: []
 })
 
-function guid() {
-  function s4() {
-    return Math.floor((1 + Math.random()) * 0x10000)
-      .toString(16)
-      .substring(1);
-  }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' +
-    s4() + '-' + s4() + s4() + s4();
-}
-
 export default (state = defaultState, action) => {
   switch (action.type) {
     case 'moveEvent':
@@ -21,9 +11,8 @@ export default (state = defaultState, action) => {
 
       const newEvent = Map(action.event).withMutations(map => {
         map.set('startDate', action.cell.date).
-          set('resource', action.cell.resource).
-          set('uuid', guid())
-      })
+          set('resource', action.cell.resource)
+      }).filter((value, key) => key !== 'width')
 
       const index = state.get('events').findIndex(item => {
         return item.get('id') === action.event.id

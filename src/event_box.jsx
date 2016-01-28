@@ -1,10 +1,23 @@
 // Vendor Libraries
 import React, { PropTypes } from 'react'
-import { findDOMNode } from 'react-dom'
 import { connect } from 'react-redux'
 
 // Local Libraries
 import { updateEventDuration } from './actions'
+
+// Styles
+const resizerStyles = {
+  top: 0,
+  right: 0,
+  width: '5px',
+  display: 'inline-block',
+  position: 'absolute'
+}
+
+const boxStyles = {
+  position: 'relative',
+  borderRadius: '3px'
+}
 
 export default class EventBox extends React.Component {
   static propTypes = {
@@ -21,20 +34,29 @@ export default class EventBox extends React.Component {
     this.state = {}
   }
 
-  componentDidMount() {
-    const { duration } = this.props,
-          node = findDOMNode(this),
-          cellWidth = node.getBoundingClientRect().width,
-          width = (duration * cellWidth) === 0 ? cellWidth : duration * cellWidth + (duration * 2) - 7
+  componentWillMount() {
+    this.mounted = false
+  }
 
+  componentWillUnmount() {
+    this.mounted = false
+    document.documentElement.removeEventListener('mousemove', this.doDrag, false)
+    document.documentElement.removeEventListener('mouseup', this.stopDrag, false)
+  }
+
+  componentDidMount() {
+    const { duration, cellWidth } = this.props,
+          width = (duration * cellWidth) === 0 ? cellWidth : (duration * cellWidth) - duration - 8
+
+    console.log(cellWidth)
+    this.mounted = true
     this.setState({ cellWidth, width, startWidth: width })
     this.refs.resizer.addEventListener('mousedown', this.initDrag, false)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { duration } = nextProps,
-          { cellWidth } = this.state,
-          width = (duration * cellWidth) === 0 ? cellWidth : duration * cellWidth + (duration * 2) - 7
+    const { duration, cellWidth } = nextProps,
+          width = (duration * cellWidth) === 0 ? cellWidth : duration * cellWidth - duration - 8
 
     this.setState({ duration, width, startWidth: width })
   }
@@ -51,37 +73,39 @@ export default class EventBox extends React.Component {
   }
 
   doDrag = (ev) => {
-    const { startWidth, startX } = this.state,
-          newWidth = (startWidth + ev.clientX - startX)
+    if (this.mounted) {
+      const { startWidth, startX } = this.state,
+            newWidth = (startWidth + ev.clientX - startX)
 
-    this.setState({ width: newWidth })
+      this.setState({ width: newWidth })
+    }
   }
 
   stopDrag = (ev) => {
-    const { dispatch, id, title, startDate, resource } = this.props,
+    const { disabled, dispatch, id, title, startDate, resource } = this.props,
           { width } = this.state,
           newDuration = this.roundToNearest(width)
 
-    dispatch(updateEventDuration({ id, title, startDate, resource }, newDuration))
+    dispatch(updateEventDuration({ disabled, id, title, startDate, resource }, newDuration))
 
     document.documentElement.removeEventListener('mousemove', this.doDrag, false)
     document.documentElement.removeEventListener('mouseup', this.stopDrag, false)
   }
 
   roundToNearest(numToRound) {
-    return Math.ceil(numToRound / this.state.cellWidth)
+    return Math.ceil(numToRound / this.props.cellWidth)
   }
 
   render() {
-    const { children, key, ...rest } = this.props,
-          { width } = this.state
-
-    let divWidth = width + 5
+    const { children, rowHeight, ...rest } = this.props,
+      { width } = this.state,
+      boxStyleMerge = Object.assign({ width }, boxStyles),
+      resizerStyleMerge = Object.assign({ height: '100%' }, resizerStyles)
 
     return (
-      <div className='event-box' key={key} style={{ width, position: 'relative' }}>
+      <div className='event-box' style={boxStyleMerge}>
         { React.Children.map(children, child => React.cloneElement(child, { width, ...rest })) }
-        <span className='resizer' style={{ top: 0, right: 0, width: '5px', height: '20px', display: 'inline-block', backgroundColor: 'black', position: 'absolute' }} ref='resizer'></span>
+        <span className='resizer' style={resizerStyleMerge} ref='resizer'></span>
       </div>
     )
   }

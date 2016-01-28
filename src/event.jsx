@@ -8,6 +8,15 @@ import { connect } from 'react-redux'
 import { ItemTypes } from './constants'
 import { moveEvent } from './actions'
 
+// Styles
+const eventStyles = {
+  position: 'relative',
+  top: 0,
+  left: '4px',
+  borderRadius: '3px',
+  padding: '2px 5px'
+}
+
 const eventSource = {
   beginDrag(props) {
     return {
@@ -16,6 +25,8 @@ const eventSource = {
     }
   },
   endDrag(props, monitor, component) {
+    console.log("FOO")
+    console.log(monitor.getSourceClientOffset())
     component.props.dispatch(
       moveEvent(props, monitor.getDropResult())
     )
@@ -48,11 +59,10 @@ class Event extends React.Component {
     const { connectDragSource, isDragging, title, duration, width } = this.props,
           opacity = isDragging ? 0 : 1
 
-    console.log(width)
     return (
       isDragging ? null :
         connectDragSource(
-          <div className='event' style={{ width: width, position: 'relative', top: 0, left: 0 }}>
+          <div className='event' style={ Object.assign({ width }, eventStyles) }>
             {title}
           </div>
         )

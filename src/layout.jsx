@@ -5,6 +5,20 @@ import { connect } from 'react-redux'
 // Local Libraries
 import Chart from './chart'
 
+// Styles
+const headerStyles = {
+  width: '3.57%',
+  border: 'solid 1px darkgrey',
+  margin: '0 -1px -1px 0',
+  padding: '0 4px',
+}
+
+const resourceStyles = {
+  border: 'solid 1px darkgrey',
+  margin: '0 -1px -1px 0',
+  textAlign: 'center'
+}
+
 class Layout extends React.Component {
   static propTypes = {
     resources: React.PropTypes.array.isRequired,
@@ -13,20 +27,35 @@ class Layout extends React.Component {
   }
 
   render() {
-    const { range } = this.props
+    const { range, resources, rowHeight } = this.props,
+          mergedResourceStyle = Object.assign({ height: rowHeight, lineHeight: `${rowHeight}px` }, resourceStyles)
 
     return (
       <div>
         <div style={{ display: 'flex' }}>
-          { range.map(date => (
-              <div
-                style={{ width: '7.14%', border: 'solid 1px darkgrey' }}>
-                {date.toString()}
-              </div>
-            ))
-          }
+          <div style={{ flexBasis: '5%' }}></div>
+          <div style={{ flexBasis: '95%', display: 'flex' }}>
+            { range.map(date => (
+                <div
+                  style={headerStyles}>
+                  {date.toCal()}
+                </div>
+              ))
+            }
+            </div>
         </div>
-        <Chart {...this.props} />
+        <div style={{ display: 'flex' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '5%' }}>
+            { resources.map(resource => (
+                <div
+                  style={mergedResourceStyle}>
+                  {resource}
+                </div>
+              ))
+            }
+          </div>
+          <Chart {...this.props} />
+        </div>
       </div>
     )
   }

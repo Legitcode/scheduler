@@ -16,7 +16,11 @@ export default class RangeDate {
   }
 
   toString() {
-    return strftime('%B %e, %Y', this.date)
+    return strftime('%B %-d, %Y', this.date)
+  }
+
+  toCal() {
+    return strftime('%b\n%-m/%-d', this.date)
   }
 
   toRef() {

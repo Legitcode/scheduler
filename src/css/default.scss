@@ -7,6 +7,8 @@ div.cell {
   height: 100%;
   background-color: lightgrey;
   border: solid 1px darkgrey;
+  display: flex;
+  align-items: center;
 }
 
 div.chart {
@@ -17,7 +19,7 @@ div.chart {
 div.event-box {
   span.resizer {
     &:hover {
-      cursor: e-resize;
+      cursor: ew-resize;
     }
   }
 }

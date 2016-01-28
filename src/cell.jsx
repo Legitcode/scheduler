@@ -1,5 +1,6 @@
 // Vendor Libraries
 import React, { PropTypes } from 'react'
+import { findDOMNode } from 'react-dom'
 import { DropTarget } from 'react-dnd'
 
 // Local LIbraries
@@ -28,13 +29,25 @@ export default class Cell extends React.Component {
     date: PropTypes.string.isRequired
   }
 
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
+
+  componentDidMount() {
+    const node = findDOMNode(this),
+          cellWidth = node.getBoundingClientRect().width
+
+    this.setState({ cellWidth })
+  }
+
   render() {
     const { children, connectDropTarget } = this.props
 
     return (
       connectDropTarget(
         <div className='cell'>
-          { children }
+          { React.Children.map(children, child => React.cloneElement(child, { cellWidth: this.state.cellWidth })) }
         </div>
       )
     )

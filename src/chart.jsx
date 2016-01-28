@@ -8,6 +8,12 @@ import EventBox from './event_box'
 import Event from './event'
 import Cell from './cell'
 
+// Styles
+const cellWrapperStyles = {
+  width: '3.57%',
+  margin: '0 -1px -1px 0'
+}
+
 @DragDropContext(HTML5Backend)
 export default class Chart extends React.Component {
   static propTypes = {
@@ -22,7 +28,7 @@ export default class Chart extends React.Component {
     ))
 
     if (currentEvent) return (
-      <EventBox {...currentEvent}>
+      <EventBox {...currentEvent} rowHeight={this.props.rowHeight}>
         <Event {...currentEvent} />
       </EventBox>
     )
@@ -30,7 +36,7 @@ export default class Chart extends React.Component {
 
   renderCell(resource, date) {
     return (
-      <div style={{ width: '7.14%', height: '40px' }}>
+      <div style={ Object.assign({ height: this.props.rowHeight }, cellWrapperStyles) }>
         <Cell resource={resource} date={date}>
           { this.renderEvent(resource, date) }
         </Cell>
@@ -47,7 +53,7 @@ export default class Chart extends React.Component {
     })
 
     return (
-      <div className='chart'>
+      <div className='chart' style={{ flexBasis: '95%' }}>
         { cells }
       </div>
     )
