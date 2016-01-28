@@ -11,14 +11,21 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
         title: 'Do this',
         startDate: today.advance('days', 1).toRef(),
         duration: 5,
-        resource: 'One'
+        resource: 'One',
+        styles: {
+          backgroundColor: 'red',
+        }
       },
       {
         id: 'barfoo',
         title: 'Do that',
         startDate: today.advance('days', 3).toRef(),
         duration: 4,
-        resource: 'Two'
+        resource: 'Two',
+        styles: {
+          backgroundColor: 'blue',
+          color: 'white'
+        }
       },
       {
         id: 'barfoobaz',

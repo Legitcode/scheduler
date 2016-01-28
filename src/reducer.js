@@ -20,7 +20,7 @@ export default (state = defaultState, action) => {
         map.set('startDate', cell.get('date')).
           set('resource', action.cell.resource).
           set('dispatchChange', true)
-      }).filter((value, key) => ['dispatchChange', 'duration', 'id', 'resource', 'startDate', 'title'].includes(key))
+      }).filter((value, key) => ['styles', 'dispatchChange', 'duration', 'id', 'resource', 'startDate', 'title'].includes(key))
 
       const index = state.get('events').findIndex(item => {
         return item.get('id') === action.event.id

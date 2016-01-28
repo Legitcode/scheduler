@@ -127,11 +127,11 @@ class Event extends React.Component {
   }
 
   stopDrag = (ev) => {
-    const { disabled, dispatch, id, title, startDate, resource } = this.props,
+    const { disabled, dispatch, id, title, startDate, resource, styles } = this.props,
           { width } = this.state,
           newDuration = this.roundToNearest(width)
 
-    dispatch(updateEventDuration({ disabled, id, title, startDate, resource }, newDuration))
+    dispatch(updateEventDuration({ disabled, id, title, startDate, resource, styles }, newDuration))
 
     document.documentElement.removeEventListener('mousemove', this.doDrag, false)
     document.documentElement.removeEventListener('mouseup', this.stopDrag, false)
@@ -147,26 +147,27 @@ class Event extends React.Component {
 
   dispatchResize(props) {
     const { eventResized, dispatch } = this.props,
-          { disabled, id, title, startDate, resource, duration } = props
+          { disabled, id, title, startDate, resource, duration, styles } = props
     eventResized(props)
-    dispatch(resetResizeDispatcher({ disabled, id, title, startDate, resource, duration }))
+    dispatch(resetResizeDispatcher({ disabled, id, title, startDate, resource, duration, styles }))
   }
 
   render() {
-    const { isDragging, connectDragSource, id, title, children, rowHeight, ...rest } = this.props,
+    const { styles, isDragging, connectDragSource, id, title, children, rowHeight, ...rest } = this.props,
           { width } = this.state,
           boxStyleMerge = Object.assign({ width }, boxStyles),
-          resizerStyleMerge = Object.assign({ height: '100%' }, resizerStyles)
+          resizerStyleMerge = Object.assign({ height: '100%' }, resizerStyles),
+          defaultStyles = { color: '#000', backgroundColor: 'darkgrey' },
+          eventStyleMerge = Object.assign({ width }, styles || defaultStyles, eventStyles)
 
     return (
       isDragging ? null :
         <div className='event-box' style={boxStyleMerge}>
           { connectDragSource(
-            <div key={id} className='event' style={ Object.assign({ width }, eventStyles) }>
+            <div key={id} className='event' style={eventStyleMerge}>
               {title}
             </div>
           )}
-          { React.Children.map(children, child => React.cloneElement(child, { width, ...rest })) }
           <span className='resizer' style={resizerStyleMerge} ref='resizer'></span>
         </div>
     )
