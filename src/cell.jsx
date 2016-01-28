@@ -2,13 +2,15 @@
 import React, { PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { DropTarget } from 'react-dnd'
+import { connect } from 'react-redux'
 
 // Local LIbraries
 import { ItemTypes } from './constants'
+import { updateCell } from './actions'
 
 const cellTarget = {
-  drop(props) {
-    return props
+  drop(props, monitor, component) {
+    return Object.assign(component.state, props)
   },
   canDrop(props) {
     return !props.children
@@ -23,7 +25,7 @@ function collect(connect, monitor) {
 }
 
 @DropTarget(ItemTypes.EVENT, cellTarget, collect)
-export default class Cell extends React.Component {
+class Cell extends React.Component {
   static propTypes = {
     resource: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired
@@ -36,9 +38,15 @@ export default class Cell extends React.Component {
 
   componentDidMount() {
     const node = findDOMNode(this),
-          cellWidth = node.getBoundingClientRect().width
+          rect = node.getBoundingClientRect(),
+          cellWidth = rect.width,
+          cellTop = rect.top,
+          cellLeft = rect.left,
+          cellRight = rect.right,
+          { date, resource, dispatch } = this.props
 
-    this.setState({ cellWidth })
+    this.setState({ cellWidth, cellTop, cellLeft, cellRight })
+    this.props.dispatch(updateCell(`${resource}${date}`, cellLeft, cellTop, cellWidth, cellRight))
   }
 
   render() {
@@ -47,9 +55,11 @@ export default class Cell extends React.Component {
     return (
       connectDropTarget(
         <div className='cell'>
-          { React.Children.map(children, child => React.cloneElement(child, { cellWidth: this.state.cellWidth })) }
+          { React.Children.map(children, child => React.cloneElement(child, this.state)) }
         </div>
       )
     )
   }
 }
+
+export default connect()(Cell)

@@ -4,7 +4,6 @@ import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
 // Local Libraries
-import EventBox from './event_box'
 import Event from './event'
 import Cell from './cell'
 
@@ -19,24 +18,30 @@ export default class Chart extends React.Component {
   static propTypes = {
     events: React.PropTypes.array.isRequired,
     resources: React.PropTypes.array.isRequired,
-    range: React.PropTypes.object.isRequired
+    range: React.PropTypes.object.isRequired,
+    eventChanged: React.PropTypes.func.isRequired,
+    eventResized: React.PropTypes.func.isRequired
   }
 
   renderEvent(resource, date) {
-    const currentEvent = this.props.events.find(event => (
-      event.resource === resource && event.startDate === date
-    ))
+    const { rowHeight, eventChanged, eventResized } = this.props
+    const currentEvent = this.props.events.find(event => {
+      return event.resource === resource && event.startDate === date
+    })
 
     if (currentEvent) return (
-      <EventBox {...currentEvent} rowHeight={this.props.rowHeight}>
-        <Event {...currentEvent} />
-      </EventBox>
+      <Event
+        {...currentEvent}
+        rowHeight={rowHeight}
+        eventChanged={eventChanged}
+        eventResized={eventResized}
+      />
     )
   }
 
   renderCell(resource, date) {
     return (
-      <div style={ Object.assign({ height: this.props.rowHeight }, cellWrapperStyles) }>
+      <div key={`${resource}${date}`} style={ Object.assign({ height: this.props.rowHeight }, cellWrapperStyles) }>
         <Cell resource={resource} date={date}>
           { this.renderEvent(resource, date) }
         </Cell>
@@ -44,7 +49,7 @@ export default class Chart extends React.Component {
     )
   }
 
-  render() {
+  createCells() {
     const { resources, range } = this.props
     const cells = []
 
@@ -52,9 +57,13 @@ export default class Chart extends React.Component {
       range.forEach(date => cells.push(this.renderCell(resource, date.toRef())))
     })
 
+    return cells
+  }
+
+  render() {
     return (
       <div className='chart' style={{ flexBasis: '95%', overflow: 'hidden', borderBottom: 'solid 1px darkgrey' }}>
-        { cells }
+        { this.createCells() }
       </div>
     )
   }

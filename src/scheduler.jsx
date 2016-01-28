@@ -80,8 +80,18 @@ export default class Scheduler extends React.Component {
 
   constructor(props) {
     super(props)
+
+    const range = new DateRange(props.from, props.to),
+          { events, resources } = props
+
+    let cells = {}
+
+    resources.forEach(resource => {
+      range.forEach(date => cells[`${resource}${date.toRef()}`] = { resource, date: date.toRef() })
+    })
+
     this.state = { range: new DateRange(props.from, props.to) }
-    this.store = createStore(reducer, fromJS({ events: props.events }))
+    this.store = createStore(reducer, fromJS({ events, resources, cells }))
   }
 
   previousClicked = (ev) => {
@@ -118,6 +128,18 @@ export default class Scheduler extends React.Component {
     this.setState({ rightCursor: 'arrow' })
   }
 
+  fireEventChanged = (props) => {
+    const { onEventChanged } = this.props,
+          { id, title, startDate, duration, resource, disabled } = props
+    if (onEventChanged) onEventChanged({ id, title, startDate, duration, resource, disabled })
+  }
+
+  fireEventResized = (props) => {
+    const { onEventResized } = this.props,
+          { id, title, startDate, duration, resource, disabled } = props
+    if (onEventResized) onEventResized({ id, title, startDate, duration, resource, disabled })
+  }
+
   render() {
     const { range, leftCursor, rightCursor } = this.state,
           mergedLeftButtonStyle = Object.assign({ cursor: leftCursor }, leftButtonStyle),
@@ -135,7 +157,12 @@ export default class Scheduler extends React.Component {
               <div style={rightButtonAfter}></div>
             </div>
           </div>
-          <Layout {...this.props} range={range} />
+          <Layout
+            {...this.props}
+            range={range}
+            eventChanged={this.fireEventChanged}
+            eventResized={this.fireEventResized}
+          />
         </div>
       </Provider>
     )

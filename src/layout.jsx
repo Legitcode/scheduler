@@ -23,7 +23,9 @@ class Layout extends React.Component {
   static propTypes = {
     resources: React.PropTypes.array.isRequired,
     range: React.PropTypes.object.isRequired,
-    events: React.PropTypes.array.isRequired
+    events: React.PropTypes.array.isRequired,
+    eventChanged: React.PropTypes.func.isRequired,
+    eventResized: React.PropTypes.func.isRequired
   }
 
   render() {
@@ -37,6 +39,7 @@ class Layout extends React.Component {
           <div style={{ flexBasis: '95%', display: 'flex' }}>
             { range.map(date => (
                 <div
+                  key={date.toRef()}
                   style={headerStyles}>
                   {date.toCal()}
                 </div>
@@ -48,6 +51,7 @@ class Layout extends React.Component {
           <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '5%' }}>
             { resources.map(resource => (
                 <div
+                  key={resource}
                   style={mergedResourceStyle}>
                   {resource}
                 </div>

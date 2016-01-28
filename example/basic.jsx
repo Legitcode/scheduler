@@ -37,10 +37,20 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
       }
     ]
 
+function eventChanged(props) {
+  console.log(props)
+}
+
+function eventResized(props) {
+  console.log(props)
+}
+
 const Basic = ({ resources, events }) => (
   <Scheduler
     resources={resources}
     events={events}
+    onEventChanged={eventChanged}
+    onEventResized={eventResized}
   />
 )
 
