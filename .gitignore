@@ -1,4 +1,7 @@
 node_modules/
 *.swp
 *.log
+example/main.js
+main.js
+index.html
 
