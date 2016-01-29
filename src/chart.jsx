@@ -1,5 +1,5 @@
 // Vendor Libraries
-import React from 'react'
+import React, { PropTypes, Component } from 'react'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -8,20 +8,18 @@ import Event from './event'
 import Cell from './cell'
 
 // Styles
-const cellWrapperStyles = {
-  width: '3.66%',
-  margin: '0 -1px -1px 0'
-}
+import { chart, cellWrapper } from './styles'
 
 @DragDropContext(HTML5Backend)
-export default class Chart extends React.Component {
+export default class Chart extends Component {
   static propTypes = {
-    events: React.PropTypes.array.isRequired,
-    resources: React.PropTypes.array.isRequired,
-    range: React.PropTypes.object.isRequired,
-    eventChanged: React.PropTypes.func.isRequired,
-    eventResized: React.PropTypes.func.isRequired,
-    eventClicked: React.PropTypes.func.isRequired
+    events: PropTypes.array.isRequired,
+    resources: PropTypes.array.isRequired,
+    range: PropTypes.object.isRequired,
+    eventChanged: PropTypes.func.isRequired,
+    eventResized: PropTypes.func.isRequired,
+    eventClicked: PropTypes.func.isRequired,
+    cellClicked: PropTypes.func.isRequired
   }
 
   renderEvent(resource, date) {
@@ -41,10 +39,23 @@ export default class Chart extends React.Component {
     )
   }
 
+  cellClicked(ev, resource, date) {
+    ev.stopPropagation()
+    const targetClass = ev.target.attributes[0].value
+    if (targetClass !== 'resizer') {
+      this.props.cellClicked(resource, date)
+    }
+  }
+
   renderCell(resource, date) {
     return (
-      <div key={`${resource}${date}`} style={ Object.assign({ height: this.props.rowHeight }, cellWrapperStyles) }>
-        <Cell resource={resource} date={date}>
+      <div
+        key={`${resource}${date}`}
+        style={ Object.assign({ height: this.props.rowHeight }, cellWrapper) }>
+        <Cell
+          resource={resource}
+          date={date}
+          onClick={(ev) => ::this.cellClicked(ev, resource, date)}>
           { this.renderEvent(resource, date) }
         </Cell>
       </div>
@@ -64,7 +75,7 @@ export default class Chart extends React.Component {
 
   render() {
     return (
-      <div className='chart' style={{ flexBasis: '95%', overflow: 'hidden', borderBottom: 'solid 1px darkgrey' }}>
+      <div className='chart' style={chart}>
         { this.createCells() }
       </div>
     )

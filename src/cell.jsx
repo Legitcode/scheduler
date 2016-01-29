@@ -6,7 +6,10 @@ import { connect } from 'react-redux'
 
 // Local LIbraries
 import { ItemTypes } from './constants'
-import { updateCell } from './actions'
+import { updateCell } from './actions/cells'
+
+// Styles
+import { cell } from './styles'
 
 const cellTarget = {
   drop(props, monitor, component) {
@@ -50,11 +53,11 @@ class Cell extends React.Component {
   }
 
   render() {
-    const { children, connectDropTarget } = this.props
+    const { children, connectDropTarget, onClick } = this.props
 
     return (
       connectDropTarget(
-        <div className='cell'>
+        <div className='cell' style={cell} onClick={onClick}>
           { React.Children.map(children, child => React.cloneElement(child, this.state)) }
         </div>
       )

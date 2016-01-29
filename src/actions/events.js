@@ -1,9 +1,10 @@
-export function moveEvent(event, cell, offset) {
+export function moveEvent(event, cell, offset, cells) {
   return {
     type: 'moveEvent',
     event,
     cell,
-    offset
+    offset,
+    cells
   }
 }
 
@@ -22,13 +23,16 @@ export function resetResizeDispatcher(event) {
   }
 }
 
-export function updateCell(key, cellLeft, cellTop, cellWidth, cellRight) {
+export function replaceResources(resources) {
   return {
-    type: 'updateCell',
-    key,
-    cellLeft,
-    cellTop,
-    cellWidth,
-    cellRight
+    type: 'replaceResources',
+    resources
+  }
+}
+
+export function replaceEvents(events) {
+  return {
+    type: 'replaceEvents',
+    events
   }
 }

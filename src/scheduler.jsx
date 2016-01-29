@@ -1,131 +1,55 @@
 // Vendor Libraries
-import React from 'react'
+import React, { PropTypes, Component } from 'react'
 import { Provider } from 'react-redux'
 import { createStore } from 'redux'
-import { fromJS } from 'immutable'
 
 // Local Libraries
 import RangeDate from './range_date'
 import DateRange from './date_range'
+import RangeSelector from './range_selector'
 import Layout from './layout'
-import reducer from './reducer'
+import reducers from './reducers'
 
-// Styles
-const selectorStyles = {
-  textAlign: 'center',
-  margin: '25px 0'
-}
+// Actions
+import { createCells } from './actions/cells'
+import { replaceResources, replaceEvents } from './actions/events'
+import { setRange } from './actions/range'
 
-const leftButtonStyle = {
-  position: 'relative',
-  marginRight: '10px',
-  display: 'inline-block',
-  width: '2em',
-  height: '2em',
-  border: '0.25em solid darkgrey',
-  borderRadius: '50%',
-  verticalAlign: 'middle'
-}
+// Create the store
+const store = createStore(reducers)
 
-const leftButtonAfter = {
-  position: 'absolute',
-  display: 'inline-block',
-  top: '0.4em',
-  left: '0.5em',
-  width: '0.7em',
-  height: '0.7em',
-  borderTop: '0.25em solid darkgrey',
-  borderRight: '0.25em solid darkgrey',
-  transform: 'rotate(-135deg)'
-}
-
-const rightButtonStyle = {
-  position: 'relative',
-  marginLeft: '10px',
-  display: 'inline-block',
-  width: '2em',
-  height: '2em',
-  border: '0.25em solid darkgrey',
-  borderRadius: '50%',
-  verticalAlign: 'middle'
-}
-
-const rightButtonAfter = {
-  position: 'absolute',
-  display: 'inline-block',
-  top: '0.4em',
-  right: '0.5em',
-  width: '0.7em',
-  height: '0.7em',
-  borderTop: '0.25em solid darkgrey',
-  borderLeft: '0.25em solid darkgrey',
-  transform: 'rotate(135deg)'
-}
-
-export default class Scheduler extends React.Component {
+export default class Scheduler extends Component {
   static propTypes = {
-    resources: React.PropTypes.array.isRequired,
-    events: React.PropTypes.array.isRequired,
-    from: React.PropTypes.string,
-    to: React.PropTypes.string,
-    range: React.PropTypes.object,
-    rowHeight: React.PropTypes.number,
+    resources: PropTypes.array.isRequired,
+    events: PropTypes.array.isRequired,
+    from: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
+    to: PropTypes.oneOfType([
+      PropTypes.string,
+      PropTypes.object
+    ]),
+    rowHeight: PropTypes.number,
+    width: PropTypes.number.isRequired
   }
 
   static defaultProps = {
-    from: new RangeDate().toString(),
-    to: new RangeDate().advance('weeks', 4).toString(),
-    rowHeight: 30
+    from: new RangeDate(),
+    to: new RangeDate().advance('weeks', 4),
+    rowHeight: 30,
+    selectorStyles: {},
+    chartStyles: {}
   }
 
-  constructor(props) {
-    super(props)
+  componentWillMount() {
+    const { dispatch, resources, events, from, to } = this.props,
+          range = new DateRange(from, to)
 
-    const range = new DateRange(props.from, props.to),
-          { events, resources } = props
-
-    let cells = {}
-
-    resources.forEach(resource => {
-      range.forEach(date => cells[`${resource}${date.toRef()}`] = { resource, date: date.toRef() })
-    })
-
-    this.state = { range: new DateRange(props.from, props.to) }
-    this.store = createStore(reducer, fromJS({ events, resources, cells }))
-  }
-
-  previousClicked = (ev) => {
-    ev.preventDefault()
-    this.changeRange({ 'weeks': -4 })
-  }
-
-  nextClicked = (ev) => {
-    ev.preventDefault()
-    this.changeRange({ 'weeks': 4 })
-  }
-
-  changeRange(props) {
-    let increment = Object.keys(props)[0],
-        amount = props[increment],
-        range = this.state.range.advance(increment, amount)
-
-    this.setState({ range })
-  }
-
-  addLeftHover = () => {
-    this.setState({ leftCursor: 'pointer' })
-  }
-
-  addRightHover = () => {
-    this.setState({ rightCursor: 'pointer' })
-  }
-
-  removeLeftHover = () => {
-    this.setState({ leftCursor: 'arrow' })
-  }
-
-  removeRightHover = () => {
-    this.setState({ rightCursor: 'arrow' })
+    store.dispatch(setRange(range))
+    store.dispatch(createCells(resources, range))
+    store.dispatch(replaceResources(resources))
+    store.dispatch(replaceEvents(events))
   }
 
   fireEventChanged = (props) => {
@@ -146,29 +70,24 @@ export default class Scheduler extends React.Component {
     if (onEventClicked) onEventClicked({ id, title, startDate, duration, resource, disabled })
   }
 
+  fireCellClicked = (resource, date) => {
+    const { onCellClicked } = this.props
+    if (onCellClicked) onCellClicked(resource, date)
+  }
+
   render() {
-    const { range, leftCursor, rightCursor } = this.state,
-          mergedLeftButtonStyle = Object.assign({ cursor: leftCursor }, leftButtonStyle),
-          mergedRightButtonStyle = Object.assign({ cursor: rightCursor }, rightButtonStyle)
+    const { range, selectorStyles, width } = this.props
 
     return (
-      <Provider store={this.store}>
-        <div>
-          <div style={selectorStyles}>
-            <div style={mergedLeftButtonStyle} onClick={this.previousClicked} onMouseOver={this.addLeftHover} onMouseLeave={this.removeLeftHover}>
-              <div style={leftButtonAfter}></div>
-            </div>
-            { range.toString() }
-            <div style={mergedRightButtonStyle} onClick={this.nextClicked} onMouseOver={this.addRightHover} onMouseLeave={this.removeRightHover}>
-              <div style={rightButtonAfter}></div>
-            </div>
-          </div>
+      <Provider store={store}>
+        <div style={{ width: width }}>
+          <RangeSelector selectorStyles={selectorStyles} />
           <Layout
             {...this.props}
-            range={range}
             eventChanged={this.fireEventChanged}
             eventResized={this.fireEventResized}
             eventClicked={this.fireEventClicked}
+            cellClicked={this.fireCellClicked}
           />
         </div>
       </Provider>

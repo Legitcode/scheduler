@@ -65,6 +65,11 @@ class Basic extends React.Component {
     console.log(props)
   }
 
+  cellClicked(resource, date) {
+    alert(`You clicked on ${resource} - ${date}`)
+    console.log(resource, date)
+  }
+
   render() {
     const { title, startDate, duration, resource } = this.state
 
@@ -73,12 +78,14 @@ class Basic extends React.Component {
         <Scheduler
           resources={resources}
           events={events}
+          width={1100}
           onEventChanged={::this.eventChanged}
           onEventResized={::this.eventResized}
           onEventClicked={::this.eventClicked}
+          onCellClicked={::this.cellClicked}
         />
         <br />
-        <div className='well'>
+        <div className='well' style={{ width: 1100 }}>
           <h3>Current Event</h3>
           <ul>
             <li>Title: {title}</li>

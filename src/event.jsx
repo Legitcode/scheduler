@@ -5,7 +5,7 @@ import { DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 
 // Local Libraries
-import { resetResizeDispatcher, moveEvent, updateEventDuration } from './actions'
+import { resetResizeDispatcher, moveEvent, updateEventDuration } from './actions/events'
 import { ItemTypes } from './constants'
 
 // Styles
@@ -14,7 +14,8 @@ const eventStyles = {
   top: 0,
   left: '4px',
   borderRadius: '3px',
-  padding: '2px 5px'
+  padding: '2px 5px',
+  zIndex: 9999
 }
 
 const resizerStyles = {
@@ -22,7 +23,8 @@ const resizerStyles = {
   right: 0,
   width: '5px',
   display: 'inline-block',
-  position: 'absolute'
+  position: 'absolute',
+  zIndex: 99999
 }
 
 const boxStyles = {
@@ -42,7 +44,7 @@ const eventSource = {
     if (!monitor.didDrop()) return
 
     component.props.dispatch(
-      moveEvent(props, monitor.getDropResult(), component.state.offset)
+      moveEvent(props, monitor.getDropResult(), component.state.offset, component.props.cells)
     )
   },
   canDrag(props) {
@@ -65,6 +67,7 @@ class Event extends React.Component {
     startDate: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
     resource: PropTypes.string.isRequired,
+    cells: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
     eventChanged: PropTypes.func.isRequired,
     eventResized: PropTypes.func.isRequired,
@@ -108,6 +111,7 @@ class Event extends React.Component {
   }
 
   initDrag = (ev) => {
+    ev.stopPropagation()
     const { width } = this.state
 
     this.setState({
@@ -119,6 +123,7 @@ class Event extends React.Component {
   }
 
   doDrag = (ev) => {
+    ev.stopPropagation()
     if (this.mounted) {
       const { startWidth, startX } = this.state,
             newWidth = (startWidth + ev.clientX - startX)
@@ -128,6 +133,7 @@ class Event extends React.Component {
   }
 
   stopDrag = (ev) => {
+    ev.stopPropagation()
     const { disabled, dispatch, id, title, startDate, resource, styles } = this.props,
           { width } = this.state,
           newDuration = this.roundToNearest(width)
@@ -153,7 +159,8 @@ class Event extends React.Component {
     dispatch(resetResizeDispatcher({ disabled, id, title, startDate, resource, duration, styles }))
   }
 
-  dispatchEventClick(props) {
+  dispatchEventClick(ev) {
+    ev.stopPropagation()
     this.props.eventClicked(this.props)
   }
 
@@ -179,4 +186,4 @@ class Event extends React.Component {
   }
 }
 
-export default connect()(Event)
+export default connect(state => state.cells.toJS())(Event)

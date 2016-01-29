@@ -1,64 +1,32 @@
 // Vendor Libraries
-import React from 'react'
+import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 // Local Libraries
 import Chart from './chart'
+import Header from './header'
+import Resources from './resources'
 
-// Styles
-const headerStyles = {
-  width: '3.66%',
-  border: 'solid 1px darkgrey',
-  margin: '0 -1px -1px 0',
-  padding: '0 4px',
-}
-
-const resourceStyles = {
-  border: 'solid 1px darkgrey',
-  margin: '0 -1px -1px 0',
-  textAlign: 'center'
-}
-
-class Layout extends React.Component {
+class Layout extends Component {
   static propTypes = {
-    resources: React.PropTypes.array.isRequired,
-    range: React.PropTypes.object.isRequired,
-    events: React.PropTypes.array.isRequired,
-    eventChanged: React.PropTypes.func.isRequired,
-    eventResized: React.PropTypes.func.isRequired,
-    eventClicked: React.PropTypes.func.isRequired
+    resources: PropTypes.array.isRequired,
+    range: PropTypes.object.isRequired,
+    events: PropTypes.array.isRequired,
+    eventChanged: PropTypes.func.isRequired,
+    eventResized: PropTypes.func.isRequired,
+    eventClicked: PropTypes.func.isRequired,
+    cellClicked: PropTypes.func.isRequired,
+    width: PropTypes.number.isRequired
   }
 
   render() {
-    const { range, resources, rowHeight } = this.props,
-          mergedResourceStyle = Object.assign({ height: rowHeight, lineHeight: `${rowHeight}px` }, resourceStyles)
+    const { width, range, resources, rowHeight } = this.props
 
     return (
-      <div>
-        <div style={{ display: 'flex' }}>
-          <div style={{ flexBasis: '5%' }}></div>
-          <div style={{ flexBasis: '95%', display: 'flex' }}>
-            { range.map(date => (
-                <div
-                  key={date.toRef()}
-                  style={headerStyles}>
-                  {date.toCal()}
-                </div>
-              ))
-            }
-            </div>
-        </div>
-        <div style={{ display: 'flex' }}>
-          <div style={{ display: 'flex', flexDirection: 'column', flexBasis: '5%' }}>
-            { resources.map(resource => (
-                <div
-                  key={resource}
-                  style={mergedResourceStyle}>
-                  {resource}
-                </div>
-              ))
-            }
-          </div>
+      <div style={{ width: width }}>
+        <Header range={range} width={width} />
+        <div style={{ display: 'flex', width: width }}>
+          <Resources height={rowHeight} resources={resources} />
           <Chart {...this.props} />
         </div>
       </div>
@@ -66,4 +34,8 @@ class Layout extends React.Component {
   }
 }
 
-export default connect((props) => props.toJS())(Layout)
+export default connect(state => {
+  const { range } = state.range.toJS()
+  const { resources, events } = state.event.toJS()
+  return { range, resources, events }
+})(Layout)
