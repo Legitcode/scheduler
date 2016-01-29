@@ -20,11 +20,12 @@ export default class Chart extends React.Component {
     resources: React.PropTypes.array.isRequired,
     range: React.PropTypes.object.isRequired,
     eventChanged: React.PropTypes.func.isRequired,
-    eventResized: React.PropTypes.func.isRequired
+    eventResized: React.PropTypes.func.isRequired,
+    eventClicked: React.PropTypes.func.isRequired
   }
 
   renderEvent(resource, date) {
-    const { rowHeight, eventChanged, eventResized } = this.props
+    const { rowHeight, eventChanged, eventResized, eventClicked } = this.props
     const currentEvent = this.props.events.find(event => {
       return event.resource === resource && event.startDate === date
     })
@@ -35,6 +36,7 @@ export default class Chart extends React.Component {
         rowHeight={rowHeight}
         eventChanged={eventChanged}
         eventResized={eventResized}
+        eventClicked={eventClicked}
       />
     )
   }

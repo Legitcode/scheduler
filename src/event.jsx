@@ -67,7 +67,8 @@ class Event extends React.Component {
     resource: PropTypes.string.isRequired,
     dispatch: PropTypes.func,
     eventChanged: PropTypes.func.isRequired,
-    eventResized: PropTypes.func.isRequired
+    eventResized: PropTypes.func.isRequired,
+    eventClicked: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -152,6 +153,10 @@ class Event extends React.Component {
     dispatch(resetResizeDispatcher({ disabled, id, title, startDate, resource, duration, styles }))
   }
 
+  dispatchEventClick(props) {
+    this.props.eventClicked(this.props)
+  }
+
   render() {
     const { styles, isDragging, connectDragSource, id, title, children, rowHeight, ...rest } = this.props,
           { width } = this.state,
@@ -162,9 +167,9 @@ class Event extends React.Component {
 
     return (
       isDragging ? null :
-        <div className='event-box' style={boxStyleMerge}>
+        <div className='event-box' style={boxStyleMerge} >
           { connectDragSource(
-            <div key={id} className='event' style={eventStyleMerge}>
+            <div key={id} className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
               {title}
             </div>
           )}

@@ -140,6 +140,12 @@ export default class Scheduler extends React.Component {
     if (onEventResized) onEventResized({ id, title, startDate, duration, resource, disabled })
   }
 
+  fireEventClicked = (props) => {
+    const { onEventClicked } = this.props,
+          { id, title, startDate, duration, resource, disabled } = props
+    if (onEventClicked) onEventClicked({ id, title, startDate, duration, resource, disabled })
+  }
+
   render() {
     const { range, leftCursor, rightCursor } = this.state,
           mergedLeftButtonStyle = Object.assign({ cursor: leftCursor }, leftButtonStyle),
@@ -162,6 +168,7 @@ export default class Scheduler extends React.Component {
             range={range}
             eventChanged={this.fireEventChanged}
             eventResized={this.fireEventResized}
+            eventClicked={this.fireEventClicked}
           />
         </div>
       </Provider>
