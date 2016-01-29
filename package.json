@@ -11,6 +11,15 @@
   },
   "author": "Darin Haener <dphaener@gmail.com> (https://github.com/dphaener)",
   "license": "MIT",
+  "keywords": [
+    "react-component",
+    "react",
+    "calendar",
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/legitcode/scheduler.git"
+  },
   "dependencies": {
     "immutable": "^3.7.6",
     "moment": "^2.11.1",
