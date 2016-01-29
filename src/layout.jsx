@@ -25,7 +25,8 @@ class Layout extends React.Component {
     range: React.PropTypes.object.isRequired,
     events: React.PropTypes.array.isRequired,
     eventChanged: React.PropTypes.func.isRequired,
-    eventResized: React.PropTypes.func.isRequired
+    eventResized: React.PropTypes.func.isRequired,
+    eventClicked: React.PropTypes.func.isRequired
   }
 
   render() {

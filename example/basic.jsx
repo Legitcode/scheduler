@@ -44,22 +44,53 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
       }
     ]
 
-function eventChanged(props) {
-  console.log(props)
-}
+class Basic extends React.Component {
+  constructor(props) {
+    super(props)
+    this.state = {}
+  }
 
-function eventResized(props) {
-  console.log(props)
-}
+  eventChanged(props) {
+    this.setState(props)
+    console.log(props)
+  }
 
-const Basic = ({ resources, events }) => (
-  <Scheduler
-    resources={resources}
-    events={events}
-    onEventChanged={eventChanged}
-    onEventResized={eventResized}
-  />
-)
+  eventResized(props) {
+    this.setState(props)
+    console.log(props)
+  }
+
+  eventClicked(props) {
+    alert(`${props.title} clicked!`)
+    console.log(props)
+  }
+
+  render() {
+    const { title, startDate, duration, resource } = this.state
+
+    return (
+      <div>
+        <Scheduler
+          resources={resources}
+          events={events}
+          onEventChanged={::this.eventChanged}
+          onEventResized={::this.eventResized}
+          onEventClicked={::this.eventClicked}
+        />
+        <br />
+        <div className='well'>
+          <h3>Current Event</h3>
+          <ul>
+            <li>Title: {title}</li>
+            <li>Start Date: {startDate}</li>
+            <li>Duration: {duration} days</li>
+            <li>Resource: {resource}</li>
+          </ul>
+        </div>
+      </div>
+    )
+  }
+}
 
 require('../src/css/default.scss')
 render(<Basic resources={resources} events={events} />, document.getElementById('react'))
