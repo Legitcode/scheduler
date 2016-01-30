@@ -47,7 +47,9 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
 class Basic extends React.Component {
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = {
+      events: events
+    }
   }
 
   eventChanged(props) {

@@ -9,28 +9,7 @@ import { resetResizeDispatcher, moveEvent, updateEventDuration } from './actions
 import { ItemTypes } from './constants'
 
 // Styles
-const eventStyles = {
-  position: 'relative',
-  top: 0,
-  left: '4px',
-  borderRadius: '3px',
-  padding: '2px 5px',
-  zIndex: 9999
-}
-
-const resizerStyles = {
-  top: 0,
-  right: 0,
-  width: '5px',
-  display: 'inline-block',
-  position: 'absolute',
-  zIndex: 99999
-}
-
-const boxStyles = {
-  position: 'relative',
-  borderRadius: '3px'
-}
+import { eventStyles, resizerStyles, boxStyles } from './styles'
 
 const eventSource = {
   beginDrag(props, monitor) {

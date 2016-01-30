@@ -43,7 +43,15 @@ export default class Scheduler extends Component {
   }
 
   componentWillMount() {
-    const { dispatch, resources, events, from, to } = this.props,
+    this.initializeStore(this.props)
+  }
+
+  componentWillReceiveProps(nextProps) {
+    this.initializeStore(nextProps)
+  }
+
+  initializeStore(props) {
+    const { dispatch, resources, events, from, to } = props,
           range = new DateRange(from, to)
 
     store.dispatch(setRange(range))

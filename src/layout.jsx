@@ -23,9 +23,9 @@ class Layout extends Component {
     const { width, range, resources, rowHeight } = this.props
 
     return (
-      <div style={{ width: width }}>
+      <div className='layout-wrapper' style={{ width: width }}>
         <Header range={range} width={width} />
-        <div style={{ display: 'flex', width: width }}>
+        <div className='chart-wrapper' style={{ display: 'flex', width: width }}>
           <Resources height={rowHeight} resources={resources} />
           <Chart {...this.props} />
         </div>

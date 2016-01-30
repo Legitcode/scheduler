@@ -50,6 +50,7 @@ export default class Chart extends Component {
   renderCell(resource, date) {
     return (
       <div
+        className='cell-wrapper'
         key={`${resource}${date}`}
         style={ Object.assign({ height: this.props.rowHeight }, cellWrapper) }>
         <Cell

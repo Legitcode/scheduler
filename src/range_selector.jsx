@@ -58,16 +58,20 @@ class RangeSelector extends Component {
           mergedRightButtonStyle = Object.assign({ cursor: rightCursor }, rightButton)
 
     return (
-      <div style={selectors}>
+      <div className='selector-holder' style={selectors}>
         <div
+          className='selector-left'
           style={mergedLeftButtonStyle}
           onClick={::this.previousClicked}
           onMouseOver={this.addLeftHover}
           onMouseLeave={this.removeLeftHover}>
           <div style={leftButtonAfter}></div>
         </div>
-        { range.toString() }
+        <div className='selector-range' style={{ display: 'inline-block' }}>
+          { range.toString() }
+        </div>
         <div
+          className='selector-right'
           style={mergedRightButtonStyle}
           onClick={::this.nextClicked}
           onMouseOver={this.addRightHover}
