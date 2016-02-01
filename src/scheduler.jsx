@@ -43,7 +43,11 @@ export default class Scheduler extends Component {
   }
 
   componentWillMount() {
+    const { resources, from, to } = this.props,
+          range = new DateRange(from, to)
+
     this.initializeStore(this.props)
+    store.dispatch(createCells(resources, range))
   }
 
   componentWillReceiveProps(nextProps) {
@@ -55,7 +59,6 @@ export default class Scheduler extends Component {
           range = new DateRange(from, to)
 
     store.dispatch(setRange(range))
-    store.dispatch(createCells(resources, range))
     store.dispatch(replaceResources(resources))
     store.dispatch(replaceEvents(events))
   }
