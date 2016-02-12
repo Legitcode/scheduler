@@ -2,11 +2,9 @@
 import React, { PropTypes } from 'react'
 import { findDOMNode } from 'react-dom'
 import { DropTarget } from 'react-dnd'
-import { connect } from 'react-redux'
 
 // Local LIbraries
 import { ItemTypes } from './constants'
-import { updateCell } from './actions/cells'
 
 // Styles
 import { cell } from './styles'
@@ -28,7 +26,7 @@ function collect(connect, monitor) {
 }
 
 @DropTarget(ItemTypes.EVENT, cellTarget, collect)
-class Cell extends React.Component {
+export default class Cell extends React.Component {
   static propTypes = {
     resource: PropTypes.string.isRequired,
     date: PropTypes.string.isRequired
@@ -36,20 +34,15 @@ class Cell extends React.Component {
 
   constructor(props) {
     super(props)
-    this.state = {}
+    this.state = { cellWidth: 0 }
   }
 
   componentDidMount() {
     const node = findDOMNode(this),
           rect = node.getBoundingClientRect(),
-          cellWidth = rect.width,
-          cellTop = rect.top,
-          cellLeft = rect.left,
-          cellRight = rect.right,
-          { date, resource, dispatch } = this.props
+          cellWidth = rect.width
 
-    this.setState({ cellWidth, cellTop, cellLeft, cellRight })
-    this.props.dispatch(updateCell(`${resource}${date}`, cellLeft, cellTop, cellWidth, cellRight))
+    this.setState({ cellWidth })
   }
 
   render() {
@@ -64,5 +57,3 @@ class Cell extends React.Component {
     )
   }
 }
-
-export default connect()(Cell)

@@ -18,7 +18,7 @@ describe('DateRange', () => {
     it('should convert the range to a formatted string', () => {
       let range = new DateRange(new Date(2015, 8, 1), new Date(2015, 9, 1));
 
-      assert.equal("September  1, 2015 - October  1, 2015", range.toString());
+      assert.equal("September 1, 2015 - October 1, 2015", range.toString());
     });
   });
 

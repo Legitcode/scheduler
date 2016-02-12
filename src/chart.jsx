@@ -5,7 +5,9 @@ import HTML5Backend from 'react-dnd-html5-backend'
 
 // Local Libraries
 import Event from './event'
+import PartialEvent from './partial_event'
 import Cell from './cell'
+import RangeDate from './range_date'
 
 // Styles
 import { chart, cellWrapper } from './styles'
@@ -16,10 +18,12 @@ export default class Chart extends Component {
     events: PropTypes.array.isRequired,
     resources: PropTypes.array.isRequired,
     range: PropTypes.object.isRequired,
+    cells: PropTypes.object.isRequired,
     eventChanged: PropTypes.func.isRequired,
     eventResized: PropTypes.func.isRequired,
     eventClicked: PropTypes.func.isRequired,
-    cellClicked: PropTypes.func.isRequired
+    cellClicked: PropTypes.func.isRequired,
+    rowHeight: PropTypes.number.isRequired
   }
 
   renderEvent(resource, date) {
@@ -37,6 +41,26 @@ export default class Chart extends Component {
         eventClicked={eventClicked}
       />
     )
+    else {
+      const partialEvent = this.props.events.find(event => {
+        let eventEnd = new RangeDate(event.startDate).advance('days', event.duration),
+            from = this.props.range.from.value(),
+            eventStart = new Date(event.startDate)
+
+        return (
+          eventEnd.toRef() === date &&
+          from > eventStart &&
+          event.resource === resource
+        )
+      })
+
+      if (partialEvent) return (
+        <PartialEvent
+          {...partialEvent}
+          rowHeight={rowHeight}
+        />
+      )
+    }
   }
 
   cellClicked(ev, resource, date) {

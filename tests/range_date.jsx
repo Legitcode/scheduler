@@ -34,7 +34,7 @@ describe('RangeDate', () => {
     let date = new RangeDate(new Date(2015, 8, 1));
 
     it('should convert the range date to a formatted string', () => {
-      assert.equal("September  1, 2015", date.toString());
+      assert.equal("September 1, 2015", date.toString());
     });
   });
 

@@ -1,18 +1,19 @@
 // Vendor Libraries
 import React, { PropTypes } from 'react'
-import { findDOMNode } from 'react-dom'
 import { DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 
 // Local Libraries
-import { resetResizeDispatcher, moveEvent, updateEventDuration } from './actions/events'
+import { moveEvent, updateEventDuration } from './actions/events'
 import { ItemTypes } from './constants'
 
 // Styles
-import { eventStyles, resizerStyles, boxStyles } from './styles'
+import { eventHandleStyles, eventStyles, resizerStyles, boxStyles } from './styles'
+
+/* globals document */
 
 const eventSource = {
-  beginDrag(props, monitor) {
+  beginDrag(props) {
     return {
       resource: props.resource,
       date: props.startDate,
@@ -23,7 +24,11 @@ const eventSource = {
     if (!monitor.didDrop()) return
 
     component.props.dispatch(
-      moveEvent(props, monitor.getDropResult(), component.state.offset, component.props.cells)
+      moveEvent(
+        props,
+        monitor.getDropResult(),
+        props.eventChanged
+      )
     )
   },
   canDrag(props) {
@@ -35,7 +40,7 @@ function collect(connect, monitor) {
   return {
     connectDragSource: connect.dragSource(),
     isDragging: monitor.isDragging(),
-    pointerOffset: monitor.getInitialClientOffset()
+    connectDragPreview: connect.dragPreview()
   }
 }
 
@@ -46,11 +51,19 @@ class Event extends React.Component {
     startDate: PropTypes.string.isRequired,
     duration: PropTypes.number.isRequired,
     resource: PropTypes.string.isRequired,
-    cells: PropTypes.object.isRequired,
     dispatch: PropTypes.func,
     eventChanged: PropTypes.func.isRequired,
     eventResized: PropTypes.func.isRequired,
-    eventClicked: PropTypes.func.isRequired
+    eventClicked: PropTypes.func.isRequired,
+    cellWidth: PropTypes.number,
+    disabled: PropTypes.bool,
+    id: PropTypes.string.isRequired,
+    styles: PropTypes.object,
+    isDragging: PropTypes.bool.isRequired,
+    connectDragSource: PropTypes.func.isRequired,
+    connectDragPreview: PropTypes.func.isRequired,
+    rowHeight: PropTypes.number.isRequired,
+    children: PropTypes.node
   }
 
   constructor(props) {
@@ -59,39 +72,23 @@ class Event extends React.Component {
     this.state = {}
   }
 
-  componentWillMount() {
-    this.mounted = false
-    if (this.props.dispatchChange) this.dispatchChange(this.props)
-  }
-
-  componentWillUnmount() {
-    this.mounted = false
-    document.documentElement.removeEventListener('mousemove', this.doDrag, false)
-    document.documentElement.removeEventListener('mouseup', this.stopDrag, false)
-  }
-
   componentDidMount() {
     const { duration, cellWidth } = this.props,
           width = (duration * cellWidth) === 0 ? cellWidth : (duration * cellWidth) - duration - 9
 
-    this.mounted = true
     this.setState({ cellWidth, width, startWidth: width })
     this.refs.resizer.addEventListener('mousedown', this.initDrag, false)
   }
 
   componentWillReceiveProps(nextProps) {
-    const { dispatchResize, pointerOffset, cellLeft, duration, cellWidth } = nextProps,
-          width = (duration * cellWidth) === 0 ? cellWidth : duration * cellWidth - duration - 9,
-          offset = pointerOffset ? (pointerOffset.x - cellLeft) : 0
+    const { duration, cellWidth } = nextProps,
+          width = (duration * cellWidth) === 0 ? cellWidth : duration * cellWidth - duration - 9
 
     this.setState({ duration, width, startWidth: width })
-    if (offset > 0) this.setState({ offset })
-    if (dispatchResize) this.dispatchResize(nextProps)
   }
 
   initDrag = (ev) => {
     ev.stopPropagation()
-    const { width } = this.state
 
     this.setState({
       startX: ev.clientX
@@ -103,21 +100,25 @@ class Event extends React.Component {
 
   doDrag = (ev) => {
     ev.stopPropagation()
-    if (this.mounted) {
-      const { startWidth, startX } = this.state,
-            newWidth = (startWidth + ev.clientX - startX)
+    const { startWidth, startX } = this.state,
+          newWidth = (startWidth + ev.clientX - startX)
 
-      this.setState({ width: newWidth })
-    }
+    this.setState({ width: newWidth })
   }
 
   stopDrag = (ev) => {
     ev.stopPropagation()
-    const { disabled, dispatch, id, title, startDate, resource, styles } = this.props,
+    const { eventResized, disabled, dispatch, id, title, startDate, resource, styles } = this.props,
           { width } = this.state,
           newDuration = this.roundToNearest(width)
 
-    dispatch(updateEventDuration({ disabled, id, title, startDate, resource, styles }, newDuration))
+    dispatch(
+      updateEventDuration(
+        { disabled, id, title, startDate, resource, styles },
+        newDuration,
+        eventResized
+      )
+    )
 
     document.documentElement.removeEventListener('mousemove', this.doDrag, false)
     document.documentElement.removeEventListener('mouseup', this.stopDrag, false)
@@ -127,42 +128,37 @@ class Event extends React.Component {
     return Math.ceil(numToRound / this.props.cellWidth)
   }
 
-  dispatchChange(props) {
-    this.props.eventChanged(props)
-  }
-
-  dispatchResize(props) {
-    const { eventResized, dispatch } = this.props,
-          { disabled, id, title, startDate, resource, duration, styles } = props
-    eventResized(props)
-    dispatch(resetResizeDispatcher({ disabled, id, title, startDate, resource, duration, styles }))
-  }
-
   dispatchEventClick(ev) {
     ev.stopPropagation()
     this.props.eventClicked(this.props)
   }
 
   render() {
-    const { styles, isDragging, connectDragSource, id, title, children, rowHeight, ...rest } = this.props,
+    const { styles, isDragging, connectDragSource, connectDragPreview, id, title, children, rowHeight, ...rest } = this.props,
           { width } = this.state,
-          boxStyleMerge = Object.assign({ width }, boxStyles),
           resizerStyleMerge = Object.assign({ height: '100%' }, resizerStyles),
           defaultStyles = { color: '#000', backgroundColor: 'darkgrey' },
-          eventStyleMerge = Object.assign({ width }, styles || defaultStyles, eventStyles)
+          eventStyleMerge = Object.assign({ width }, styles || defaultStyles, eventStyles),
+          opacity = isDragging ? 0 : 1,
+          boxStyleMerge = Object.assign({ width, opacity }, boxStyles)
 
     return (
-      isDragging ? null :
-        <div className='event-box' style={boxStyleMerge} >
-          { connectDragSource(
-            <div key={id} className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
-              {title}
-            </div>
-          )}
-          <span className='resizer' style={resizerStyleMerge} ref='resizer'></span>
-        </div>
+      <div className='event-box' style={boxStyleMerge}>
+        { isDragging ? null :
+        connectDragPreview(
+          <div key={id} className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
+            { connectDragSource(
+                <span style={eventHandleStyles} className='event-handle'></span>
+              )
+            }
+            {title}
+          </div>
+        )
+        }
+        <span className='resizer' style={resizerStyleMerge} ref='resizer'></span>
+      </div>
     )
   }
 }
 
-export default connect(state => state.cells.toJS())(Event)
+export default connect()(Event)

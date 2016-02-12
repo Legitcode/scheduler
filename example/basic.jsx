@@ -2,6 +2,9 @@ import React from 'react'
 import { render } from 'react-dom'
 import Scheduler from '../src/scheduler'
 import RangeDate from '../src/range_date'
+import DateRange from '../src/date_range'
+import Perf from 'react-addons-perf'
+window.Perf = Perf
 
 var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'],
     today = new RangeDate(new Date()),
@@ -11,21 +14,14 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
         title: 'Do this',
         startDate: today.advance('days', 1).toRef(),
         duration: 5,
-        resource: 'One',
-        styles: {
-          backgroundColor: 'red',
-        }
+        resource: 'One'
       },
       {
         id: 'barfoo',
         title: 'Do that',
         startDate: today.advance('days', 3).toRef(),
         duration: 4,
-        resource: 'Two',
-        styles: {
-          backgroundColor: 'blue',
-          color: 'white'
-        }
+        resource: 'Two'
       },
       {
         id: 'barfoobaz',
@@ -41,24 +37,41 @@ var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight',
         startDate: today.advance('days', 6).toRef(),
         duration: 14,
         resource: 'Seven'
+      },
+      {
+        id: 'foobaz',
+        title: 'Do another thing next month',
+        startDate: today.advance('days', 36).toRef(),
+        duration: 14,
+        resource: 'Seven'
       }
     ]
 
 class Basic extends React.Component {
   constructor(props) {
     super(props)
+    let from = new RangeDate()
+    let to = from.advance('weeks', 4)
+
     this.state = {
-      events: events
+      events: props.events,
+      range: new DateRange(from, to)
     }
   }
 
   eventChanged(props) {
-    this.setState(props)
+    const index = this.state.events.findIndex(event => event.id === props.id)
+    const newEvents = this.state.events
+    newEvents[index] = props
+    this.setState({ ...props, events: newEvents })
     console.log(props)
   }
 
   eventResized(props) {
-    this.setState(props)
+    const index = this.state.events.findIndex(event => event.id === props.id)
+    const newEvents = this.state.events
+    newEvents[index] = props
+    this.setState({ ...props, events: newEvents })
     console.log(props)
   }
 
@@ -72,12 +85,19 @@ class Basic extends React.Component {
     console.log(resource, date)
   }
 
+  rangeChanged(range) {
+    this.setState({ range: range })
+  }
+
   render() {
-    const { title, startDate, duration, resource } = this.state
+    const { events, range, title, startDate, duration, resource } = this.state,
+          { from, to } = range
 
     return (
       <div>
         <Scheduler
+          from={from}
+          to={to}
           resources={resources}
           events={events}
           width={1100}
@@ -85,6 +105,7 @@ class Basic extends React.Component {
           onEventResized={::this.eventResized}
           onEventClicked={::this.eventClicked}
           onCellClicked={::this.cellClicked}
+          onRangeChanged={::this.rangeChanged}
         />
         <br />
         <div className='well' style={{ width: 1100 }}>

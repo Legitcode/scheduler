@@ -5,20 +5,32 @@ import DateRange from '../date_range'
 
 const from = new RangeDate()
 const to = new RangeDate().advance('weeks', 4)
+
 const defaultState = Map({
-  range: new DateRange(from, to)
+  range: new DateRange(from, to),
+  rangeDidChange: false
 })
 
 export default (state = defaultState, action) => {
+  let newRange
+
   switch(action.type) {
     case 'setRange':
-      return state.set('range', action.range)
+      return state.setIn(['range'], action.range)
     case 'advanceRange':
-      const newRange = state.get('range').advance('weeks', 4)
-      return state.set('range', newRange)
+      newRange = state.get('range').advance('weeks', 4)
+      return state.withMutations(map => {
+        map.set('range', newRange).
+          set('rangeDidChange', true)
+      })
     case 'retardRange':
-      const newRange = state.get('range').advance('weeks', -4)
-      return state.set('range', newRange)
+      newRange = state.get('range').advance('weeks', -4)
+      return state.withMutations(map => {
+        map.set('range', newRange).
+          set('rangeDidChange', true)
+      })
+    case 'clearRangeFlag':
+      return state.setIn(['rangeDidChange'], false)
     default:
       return state
   }

@@ -1,12 +1,11 @@
 // Vendor Libraries
 import React, { PropTypes, Component } from 'react'
 import { Provider } from 'react-redux'
-import { createStore } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 
 // Local Libraries
 import RangeDate from './range_date'
 import DateRange from './date_range'
-import RangeSelector from './range_selector'
 import Layout from './layout'
 import reducers from './reducers'
 
@@ -15,8 +14,37 @@ import { createCells } from './actions/cells'
 import { replaceResources, replaceEvents } from './actions/events'
 import { setRange } from './actions/range'
 
+// Promise Middleware
+const promiseMiddleware = store => next => action => {
+  const { callback, nextAction, type, ...rest } = action
+  if (!nextAction && !callback) {
+    return next(action)
+  }
+
+  var p = new Promise((resolve) => {
+    next({ ...rest, type: type })
+    resolve(store.getState())
+  })
+
+  p.then(state => {
+    if (nextAction) {
+      next({ ...rest, type: action.nextAction, range: state.range.toJS().range, resources: state.event.toJS().resources })
+    } else {
+      let id = action.event.id,
+          index = state.event.get('events').findIndex(i => i.get('id') === id)
+
+      callback(state.event.getIn(['events', index]).toJS())
+    }
+  }).
+  catch(ex => {
+    next({ ...rest, ex, type: type + '_FAILURE' })
+    throw new Error(ex)
+  })
+}
+
 // Create the store
-const store = createStore(reducers)
+const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore)
+const store = createStoreWithMiddleware(reducers)
 
 export default class Scheduler extends Component {
   static propTypes = {
@@ -31,7 +59,12 @@ export default class Scheduler extends Component {
       PropTypes.object
     ]),
     rowHeight: PropTypes.number,
-    width: PropTypes.number.isRequired
+    width: PropTypes.number.isRequired,
+    onEventChanged: PropTypes.func,
+    onEventResized: PropTypes.func,
+    onEventClicked: PropTypes.func,
+    onCellClicked: PropTypes.func,
+    onRangeChanged: PropTypes.func
   }
 
   static defaultProps = {
@@ -55,7 +88,7 @@ export default class Scheduler extends Component {
   }
 
   initializeStore(props) {
-    const { dispatch, resources, events, from, to } = props,
+    const { resources, events, from, to } = props,
           range = new DateRange(from, to)
 
     store.dispatch(setRange(range))
@@ -86,21 +119,22 @@ export default class Scheduler extends Component {
     if (onCellClicked) onCellClicked(resource, date)
   }
 
-  render() {
-    const { range, selectorStyles, width } = this.props
+  fireRangeChanged = (range) => {
+    const { onRangeChanged } = this.props
+    if (onRangeChanged) onRangeChanged(range)
+  }
 
+  render() {
     return (
       <Provider store={store}>
-        <div style={{ width: width }}>
-          <RangeSelector selectorStyles={selectorStyles} />
-          <Layout
-            {...this.props}
-            eventChanged={this.fireEventChanged}
-            eventResized={this.fireEventResized}
-            eventClicked={this.fireEventClicked}
-            cellClicked={this.fireCellClicked}
-          />
-        </div>
+        <Layout
+          {...this.props}
+          rangeChanged={this.fireRangeChanged}
+          eventChanged={this.fireEventChanged}
+          eventResized={this.fireEventResized}
+          eventClicked={this.fireEventClicked}
+          cellClicked={this.fireCellClicked}
+        />
       </Provider>
     )
   }

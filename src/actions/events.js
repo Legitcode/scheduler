@@ -1,25 +1,18 @@
-export function moveEvent(event, cell, offset, cells) {
+export function moveEvent(event, cell, callback) {
   return {
     type: 'moveEvent',
+    callback,
     event,
-    cell,
-    offset,
-    cells
+    cell
   }
 }
 
-export function updateEventDuration(event, duration) {
+export function updateEventDuration(event, duration, callback) {
   return {
     type: 'updateEventDuration',
+    callback,
     event,
     duration
-  }
-}
-
-export function resetResizeDispatcher(event) {
-  return {
-    type: 'resetResizeDispatcher',
-    event
   }
 }
 

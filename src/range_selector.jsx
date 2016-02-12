@@ -3,28 +3,32 @@ import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
 
 // Actions
-import { advanceRange, retardRange } from './actions/range'
+import { advanceRange, retardRange, clearRangeFlag } from './actions/range'
 
 // Styles
 import { selectors, leftButton, leftButtonAfter, rightButton, rightButtonAfter } from './styles'
 
 class RangeSelector extends Component {
   static propTypes = {
-    leftCursor: PropTypes.string,
-    rightCursor: PropTypes.string,
     range: PropTypes.object.isRequired,
-    dispatch: PropTypes.func.isRequired
-  }
-
-  static defaultProps = {
-    leftCursor: 'arrow',
-    rightCursor: 'arrow'
+    rangeDidChange: PropTypes.bool.isRequired,
+    dispatch: PropTypes.func.isRequired,
+    rangeChanged: PropTypes.func.isRequired,
+    leftCursor: PropTypes.string,
+    rightCursor: PropTypes.string
   }
 
   constructor(props) {
     super(props)
 
     this.state = {}
+  }
+
+  componentWillReceiveProps(nextProps) {
+    if (nextProps.rangeDidChange) {
+      this.props.dispatch(clearRangeFlag())
+      this.props.rangeChanged(nextProps.range)
+    }
   }
 
   addLeftHover = () => {
@@ -83,4 +87,4 @@ class RangeSelector extends Component {
   }
 }
 
-export default connect(state => state.range.toJS())(RangeSelector)
+export default connect()(RangeSelector)

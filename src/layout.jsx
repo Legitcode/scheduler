@@ -6,28 +6,36 @@ import { connect } from 'react-redux'
 import Chart from './chart'
 import Header from './header'
 import Resources from './resources'
+import RangeSelector from './range_selector'
 
 class Layout extends Component {
   static propTypes = {
     resources: PropTypes.array.isRequired,
     range: PropTypes.object.isRequired,
     events: PropTypes.array.isRequired,
+    cells: PropTypes.object.isRequired,
     eventChanged: PropTypes.func.isRequired,
     eventResized: PropTypes.func.isRequired,
     eventClicked: PropTypes.func.isRequired,
     cellClicked: PropTypes.func.isRequired,
-    width: PropTypes.number.isRequired
+    rangeChanged: PropTypes.func.isRequired,
+    rangeDidChange: PropTypes.bool.isRequired,
+    width: PropTypes.number.isRequired,
+    rowHeight: PropTypes.number.isRequired
   }
 
   render() {
-    const { width, range, resources, rowHeight } = this.props
+    const { rangeDidChange, rangeChanged, width, range, resources, rowHeight } = this.props
 
     return (
-      <div className='layout-wrapper' style={{ width: width }}>
-        <Header range={range} width={width} />
-        <div className='chart-wrapper' style={{ display: 'flex', width: width }}>
-          <Resources height={rowHeight} resources={resources} />
-          <Chart {...this.props} />
+      <div style={{ width: width }}>
+        <RangeSelector range={range} rangeChanged={rangeChanged} rangeDidChange={rangeDidChange} />
+        <div className='layout-wrapper' style={{ width: width }}>
+          <Header range={range} width={width} />
+          <div className='chart-wrapper' style={{ display: 'flex', width: width }}>
+            <Resources height={rowHeight} resources={resources} />
+            <Chart {...this.props} />
+          </div>
         </div>
       </div>
     )
@@ -35,7 +43,8 @@ class Layout extends Component {
 }
 
 export default connect(state => {
-  const { range } = state.range.toJS()
+  const { rangeDidChange, range } = state.range.toJS()
   const { resources, events } = state.event.toJS()
-  return { range, resources, events }
+  const { cells } = state.cells.toJS()
+  return { rangeDidChange, cells, range, resources, events }
 })(Layout)

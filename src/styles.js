@@ -53,7 +53,7 @@ export const chartHeader = {
   width: '3.66%',
   border: 'solid 1px darkgrey',
   margin: '0 -1px -1px 0',
-  padding: '0 4px',
+  padding: '0 4px'
 }
 
 export const resourceSideBar = {
@@ -95,8 +95,16 @@ export const eventStyles = {
   top: 0,
   left: '4px',
   borderRadius: '3px',
+  padding: '2px 5px'
+}
+
+export const partialEventStyles = {
+  position: 'absolute',
+  top: 0,
+  right: '4px',
+  borderRadius: '3px',
   padding: '2px 5px',
-  zIndex: 9999
+  textAlign: 'right'
 }
 
 export const resizerStyles = {
@@ -104,11 +112,19 @@ export const resizerStyles = {
   right: 0,
   width: '5px',
   display: 'inline-block',
-  position: 'absolute',
-  zIndex: 99999
+  position: 'absolute'
 }
 
 export const boxStyles = {
   position: 'relative',
   borderRadius: '3px'
+}
+
+export const eventHandleStyles = {
+  position: 'absolute',
+  top: 0,
+  left: 0,
+  height: '100%',
+  width: 30,
+  display: 'inline-block'
 }

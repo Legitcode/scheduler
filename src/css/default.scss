@@ -4,4 +4,10 @@ div.event-box {
       cursor: ew-resize;
     }
   }
+
+  span.event-handle {
+    &:hover {
+      cursor: move;
+    }
+  }
 }
