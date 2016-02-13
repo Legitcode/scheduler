@@ -11,16 +11,10 @@ export default class PartialEvent extends React.Component {
     duration: PropTypes.number.isRequired,
     resource: PropTypes.string.isRequired,
     dispatch: PropTypes.func,
-    eventChanged: PropTypes.func.isRequired,
-    eventResized: PropTypes.func.isRequired,
-    eventClicked: PropTypes.func.isRequired,
     cellWidth: PropTypes.number,
     disabled: PropTypes.bool,
     id: PropTypes.string.isRequired,
     styles: PropTypes.object,
-    isDragging: PropTypes.bool.isRequired,
-    connectDragSource: PropTypes.func.isRequired,
-    connectDragPreview: PropTypes.func.isRequired,
     rowHeight: PropTypes.number.isRequired,
     children: PropTypes.node
   }

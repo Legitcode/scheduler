@@ -32,24 +32,25 @@ export default class Chart extends Component {
       return event.resource === resource && event.startDate === date
     })
 
-    if (currentEvent) return (
-      <Event
-        {...currentEvent}
-        rowHeight={rowHeight}
-        eventChanged={eventChanged}
-        eventResized={eventResized}
-        eventClicked={eventClicked}
-      />
-    )
-    else {
+    if (currentEvent) {
+      return (
+        <Event
+          {...currentEvent}
+          rowHeight={rowHeight}
+          eventChanged={eventChanged}
+          eventResized={eventResized}
+          eventClicked={eventClicked}
+        />
+      )
+    } else {
       const partialEvent = this.props.events.find(event => {
         let eventEnd = new RangeDate(event.startDate).advance('days', event.duration),
-            from = this.props.range.from.value(),
-            eventStart = new Date(event.startDate)
+            from = this.props.range.from.value().setHours(0, 0, 0, 0),
+            eventStart = (new Date(event.startDate)).setHours(0, 0, 0, 0)
 
         return (
           eventEnd.toRef() === date &&
-          from > eventStart &&
+          from.valueOf() > eventStart.valueOf() &&
           event.resource === resource
         )
       })
