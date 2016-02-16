@@ -77,7 +77,7 @@ export default class Chart extends Component {
       <div
         className='cell-wrapper'
         key={`${resource}${date}`}
-        style={ Object.assign({ height: this.props.rowHeight }, cellWrapper) }>
+        style={ Object.assign({ width: `${(this.props.width * 0.95) / 29 + .99}px`, height: this.props.rowHeight }, cellWrapper) }>
         <Cell
           resource={resource}
           date={date}
