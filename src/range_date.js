@@ -1,40 +1,33 @@
-import strftime from 'strftime'
+import moment from 'moment-timezone'
 
 export default class RangeDate {
-  static incrementMap = {
-    'days': 1,
-    'weeks': 7,
-    'months': 30
-  }
-
   constructor(date = null) {
     if (date) {
-      this.date = date instanceof RangeDate ? date.value() : new Date(date)
+      this.date = date instanceof RangeDate ? moment(date.value()) : moment(date)
     } else {
-      this.date = new Date()
+      this.date = moment()
     }
   }
 
   toString() {
-    return strftime('%B %-d, %Y', this.date)
+    return this.date.format('MMMM D, YYYY')
   }
 
   toCal() {
-    return strftime('%b\n%-m/%-d', this.date)
+    return this.date.format('MMM[\n]M/D')
   }
 
   toRef() {
-    return strftime('%Y-%m-%d', this.date)
+    return this.date.format('YYYY-MM-DD')
   }
 
   value() {
-    return this.date
+    return this.date._d
   }
 
   advance(increment, amount) {
-    let copy = new Date(this.date),
-        newDate = copy.setDate(copy.getDate() + (RangeDate.incrementMap[increment] * amount))
-
-    return new RangeDate(new Date(newDate))
+    return new RangeDate(
+      this.date.clone().add(amount, increment)
+    )
   }
 }

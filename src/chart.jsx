@@ -45,12 +45,12 @@ export default class Chart extends Component {
     } else {
       const partialEvent = this.props.events.find(event => {
         let eventEnd = new RangeDate(event.startDate).advance('days', event.duration),
-            from = this.props.range.from.value().setHours(0, 0, 0, 0),
-            eventStart = (new Date(event.startDate)).setHours(0, 0, 0, 0)
+            from = this.props.range.from.date,
+            eventStart = new RangeDate(event.startDate).date
 
         return (
           eventEnd.toRef() === date &&
-          from.valueOf() > eventStart.valueOf() &&
+          from.isAfter(eventStart, 'day') &&
           event.resource === resource
         )
       })

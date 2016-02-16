@@ -40,7 +40,7 @@ export default class PartialEvent extends React.Component {
   }
 
   render() {
-    const { styles, isDragging, connectDragSource, connectDragPreview, id, title, children, rowHeight, ...rest } = this.props,
+    const { styles, id, title, children, rowHeight, ...rest } = this.props,
           { width } = this.state,
           defaultStyles = { color: '#000', backgroundColor: 'darkgrey' },
           eventStyleMerge = Object.assign({ width }, styles || defaultStyles, partialEventStyles),

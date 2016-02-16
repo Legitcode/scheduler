@@ -37,6 +37,14 @@ export default class Cell extends React.Component {
     this.state = { cellWidth: 0 }
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.props.children && !nextProps.children) return true
+    if (!this.props.children && nextProps.children) return true
+    if (this.props.date !== nextProps.date) return true
+    if (this.state.cellWidth !== nextState.cellWidth) return true
+    return false
+  }
+
   componentDidMount() {
     const node = findDOMNode(this),
           rect = node.getBoundingClientRect(),
