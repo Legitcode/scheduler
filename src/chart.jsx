@@ -1,5 +1,6 @@
 // Vendor Libraries
 import React, { PropTypes, Component } from 'react'
+import shallowCompare from 'react-addons-shallow-compare'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
 
@@ -24,6 +25,10 @@ export default class Chart extends Component {
     eventClicked: PropTypes.func.isRequired,
     cellClicked: PropTypes.func.isRequired,
     rowHeight: PropTypes.number.isRequired
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    return shallowCompare(this, nextProps, nextState)
   }
 
   renderEvent(resource, date) {

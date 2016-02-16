@@ -2,6 +2,7 @@
 import React, { PropTypes, Component } from 'react'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
+import { batchActions, enableBatching } from 'redux-batched-actions'
 
 // Local Libraries
 import RangeDate from './range_date'
@@ -44,7 +45,7 @@ const promiseMiddleware = store => next => action => {
 
 // Create the store
 const createStoreWithMiddleware = applyMiddleware(promiseMiddleware)(createStore)
-const store = createStoreWithMiddleware(reducers)
+const store = createStoreWithMiddleware(enableBatching(reducers))
 
 export default class Scheduler extends Component {
   static propTypes = {
@@ -91,9 +92,11 @@ export default class Scheduler extends Component {
     const { resources, events, from, to } = props,
           range = new DateRange(from, to)
 
-    store.dispatch(setRange(range))
-    store.dispatch(replaceResources(resources))
-    store.dispatch(replaceEvents(events))
+    store.dispatch(batchActions([
+      setRange(range),
+      replaceResources(resources),
+      replaceEvents(events)
+    ]))
   }
 
   fireEventChanged = (props) => {
