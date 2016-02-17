@@ -1,0 +1,5 @@
+div.event-box span.resizer:hover {
+  cursor: ew-resize; }
+
+div.event-box span.event-handle:hover {
+  cursor: move; }
