@@ -1,6 +1,6 @@
 {
   "name": "legit-scheduler",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "A React drag and drop scheduler component",
   "main": "lib/index.js",
   "scripts": {
