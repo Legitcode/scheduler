@@ -16,7 +16,8 @@ export default class PartialEvent extends React.Component {
     id: PropTypes.string.isRequired,
     styles: PropTypes.object,
     rowHeight: PropTypes.number.isRequired,
-    children: PropTypes.node
+    children: PropTypes.node,
+    eventClicked: PropTypes.func.isRequired
   }
 
   constructor(props) {
@@ -39,6 +40,11 @@ export default class PartialEvent extends React.Component {
     this.setState({ duration, width, startWidth: width })
   }
 
+  dispatchEventClick(ev) {
+    ev.stopPropagation()
+    this.props.eventClicked(this.props)
+  }
+
   render() {
     const { styles, id, title, children, rowHeight, ...rest } = this.props,
           { width } = this.state,
@@ -48,7 +54,7 @@ export default class PartialEvent extends React.Component {
 
     return (
       <div className='event-box' style={boxStyleMerge}>
-        <div className='event' style={eventStyleMerge}>
+        <div className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
           {title}
         </div>
       </div>

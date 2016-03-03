@@ -23,7 +23,8 @@ export default class Chart extends Component {
     eventResized: PropTypes.func.isRequired,
     eventClicked: PropTypes.func.isRequired,
     cellClicked: PropTypes.func.isRequired,
-    rowHeight: PropTypes.number.isRequired
+    rowHeight: PropTypes.number.isRequired,
+    width: PropTypes.number.isRequired
   }
 
   renderEvent(resource, date) {
@@ -59,6 +60,7 @@ export default class Chart extends Component {
         <PartialEvent
           {...partialEvent}
           rowHeight={rowHeight}
+          eventClicked={eventClicked}
         />
       )
     }
