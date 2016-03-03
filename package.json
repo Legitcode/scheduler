@@ -1,9 +1,10 @@
 {
   "name": "legit-scheduler",
-  "version": "0.1.5",
+  "version": "0.1.6",
   "description": "A React drag and drop scheduler component",
   "main": "lib/index.js",
   "scripts": {
+    "prepublish": "npm run compile",
     "test": "mocha --opts ./mocha.opts; eslint ./src/ --ext .jsx,.js --global require,exports:true",
     "compile": "babel src --ignore __tests__ --stage 0 --out-dir lib; node-sass src/css/default.scss lib/css/default.css",
     "example": "webpack-dev-server --config ./example/webpack.config.js --hot",
