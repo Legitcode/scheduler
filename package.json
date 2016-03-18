@@ -1,6 +1,6 @@
 {
   "name": "legit-scheduler",
-  "version": "0.1.6",
+  "version": "0.2.0",
   "description": "A React drag and drop scheduler component",
   "main": "lib/index.js",
   "scripts": {
@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "immutable": "^3.7.6",
+    "legit-rubyfill": "0.0.6",
     "moment": "^2.11.2",
     "moment-timezone": "^0.5.0",
     "react": "^0.14.6",

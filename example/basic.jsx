@@ -51,7 +51,7 @@ class Basic extends React.Component {
   constructor(props) {
     super(props)
     let from = new RangeDate()
-    let to = from.advance('weeks', 4)
+    let to = from.advance('weeks', 2)
 
     this.state = {
       events: props.events,

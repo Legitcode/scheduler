@@ -8,13 +8,18 @@ export default class DateRange {
     this.to = new RangeDate(to)
   }
 
+  daysInRange() {
+    return this.to.date.diff(this.from.date, 'days') + 1
+  }
+
   toString() {
     return `${this.from.toString()} - ${this.to.toString()}`
   }
 
-  advance(increment, amount) {
-    let from = this.from.advance(increment, amount),
-        to = this.to.advance(increment, amount)
+  advance(reverse = false) {
+    const advanceAmount = reverse ? -this.daysInRange() : this.daysInRange(),
+          from = this.from.advance('days', advanceAmount),
+          to = this.to.advance('days', advanceAmount)
 
     return new DateRange(from, to)
   }

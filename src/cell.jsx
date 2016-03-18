@@ -40,7 +40,7 @@ export default class Cell extends React.Component {
   componentDidMount() {
     const node = findDOMNode(this),
           rect = node.getBoundingClientRect(),
-          cellWidth = rect.width
+          cellWidth = rect.width + 2
 
     this.setState({ cellWidth })
   }

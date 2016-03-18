@@ -4,8 +4,8 @@ import React from 'react'
 // Styles
 import { resourceWrapper, resourceSideBar } from './styles'
 
-export default ({ resources, height }) => (
-  <div className='resource-wrapper' style={resourceWrapper}>
+export default ({ width, resources, height }) => (
+   <div className='resource-wrapper' style={Object.assign({ width: `${width * 0.05}px` }, resourceWrapper) }>
     { resources.map(resource => (
         <div
           className='resource-cell'

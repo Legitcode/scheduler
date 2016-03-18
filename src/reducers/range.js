@@ -18,13 +18,13 @@ export default (state = defaultState, action) => {
     case 'setRange':
       return state.setIn(['range'], action.range)
     case 'advanceRange':
-      newRange = state.get('range').advance('weeks', 4)
+      newRange = state.get('range').advance()
       return state.withMutations(map => {
         map.set('range', newRange).
           set('rangeDidChange', true)
       })
     case 'retardRange':
-      newRange = state.get('range').advance('weeks', -4)
+      newRange = state.get('range').advance(true)
       return state.withMutations(map => {
         map.set('range', newRange).
           set('rangeDidChange', true)

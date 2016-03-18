@@ -2,6 +2,7 @@
 import React, { PropTypes, Component } from 'react'
 import { DragDropContext } from 'react-dnd'
 import HTML5Backend from 'react-dnd-html5-backend'
+import 'legit-rubyfill/array/each_slice'
 
 // Local Libraries
 import Event from './event'
@@ -75,11 +76,13 @@ export default class Chart extends Component {
   }
 
   renderCell(resource, date) {
+    const { width, range } = this.props
+
     return (
       <div
         className='cell-wrapper'
         key={`${resource}${date}`}
-        style={ Object.assign({ width: `${(this.props.width * 0.95) / 29 + .99}px`, height: this.props.rowHeight }, cellWrapper) }>
+        style={ Object.assign({ width: `${(width * 0.95 / range.daysInRange()) + 1}px`, height: this.props.rowHeight }, cellWrapper) }>
         <Cell
           resource={resource}
           date={date}
@@ -90,20 +93,32 @@ export default class Chart extends Component {
     )
   }
 
+  renderRow(resource) {
+    const { range, width } = this.props
+
+    return (
+      <div className='row-wrapper' style={{ width: `${width * 0.95}px`, display: 'flex' }}>
+        { range.map(date => this.renderCell(resource, date.toRef())) }
+      </div>
+    )
+  }
+
   createCells() {
-    const { resources, range } = this.props
-    const cells = []
+    const { resources } = this.props,
+          rows = []
 
     resources.forEach(resource => {
-      range.forEach(date => cells.push(this.renderCell(resource, date.toRef())))
+      rows.push(this.renderRow(resource))
     })
 
-    return cells
+    return rows
   }
 
   render() {
+    const { width } = this.props
+
     return (
-      <div className='chart' style={chart}>
+      <div className='chart' style={Object.assign({ width: `${width * 0.95}px` }, chart) }>
         { this.createCells() }
       </div>
     )

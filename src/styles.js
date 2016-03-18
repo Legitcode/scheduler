@@ -52,7 +52,12 @@ export const rightButtonAfter = {
 export const chartHeader = {
   border: 'solid 1px darkgrey',
   margin: '0 -1px -1px 0',
-  padding: '0 4px'
+  padding: '0 4px',
+  flexGrow: 0
+}
+
+export const headerWrapper = {
+  borderRight: 'solid 1px darkgrey'
 }
 
 export const resourceSideBar = {
@@ -66,26 +71,24 @@ export const cell = {
   height: '100%',
   backgroundColor: 'transparent',
   display: 'flex',
-  alignItems: 'center',
-  border: 'solid 1px darkgrey'
+  alignItems: 'center'
 }
 
 export const chart = {
   display: 'flex',
   flexWrap: 'wrap',
-  width: '95%',
-  overflow: 'hidden',
-  borderBottom: 'solid 1px darkgrey'
+  borderBottom: 'solid 1px darkgrey',
+  borderRight: 'solid 1px darkgrey'
 }
 
 export const cellWrapper = {
-  margin: '0 -1px -1px 0'
+  margin: '0 -1px -1px 0',
+  border: 'solid 1px darkgrey'
 }
 
 export const resourceWrapper = {
   display: 'flex',
-  flexDirection: 'column',
-  width: '5%'
+  flexDirection: 'column'
 }
 
 export const eventStyles = {

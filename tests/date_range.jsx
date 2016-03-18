@@ -26,7 +26,21 @@ describe('DateRange', () => {
     it('should advance the date range', () => {
       let range = new DateRange("2015-09-01", "2015-09-15")
 
-      assert.equal("September 15, 2015 - September 29, 2015", range.advance('weeks', 2).toString())
+      assert.equal("September 16, 2015 - September 30, 2015", range.advance().toString())
+    })
+
+    it('should advance the date range for the number of days in the range', () => {
+      let range = new DateRange("2015-09-01", "2015-09-04")
+
+      assert.equal("September 5, 2015 - September 8, 2015", range.advance().toString())
+    })
+  })
+
+  describe('#daysInRange', () => {
+    it('should return the number of days in the range', () => {
+      let range = new DateRange("2016-01-01", "2016-01-03")
+
+      assert.equal(3, range.daysInRange())
     })
   })
 })

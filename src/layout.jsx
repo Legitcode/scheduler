@@ -28,12 +28,12 @@ class Layout extends Component {
     const { rangeDidChange, rangeChanged, width, range, resources, rowHeight } = this.props
 
     return (
-      <div style={{ width: width }}>
+      <div style={{ width: width, overflow: 'hidden' }}>
         <RangeSelector range={range} rangeChanged={rangeChanged} rangeDidChange={rangeDidChange} />
         <div className='layout-wrapper' style={{ width: width }}>
           <Header range={range} width={width} />
           <div className='chart-wrapper' style={{ display: 'flex', width: width }}>
-            <Resources height={rowHeight} resources={resources} />
+            <Resources height={rowHeight} width={width} resources={resources} />
             <Chart {...this.props} />
           </div>
         </div>
