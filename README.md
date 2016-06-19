@@ -1,3 +1,5 @@
+[![Codetree](https://codetree.com/images/managed-with-codetree.svg)](https://codetree.com/projects/Q6Rz)
+
 # Legit Scheduler
 A pure React implementation of a drag and drop scheduler
 
