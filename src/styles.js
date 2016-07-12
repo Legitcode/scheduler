@@ -64,7 +64,7 @@ export const resourceSideBar = {
   border: 'solid 1px darkgrey',
   margin: '0 -1px -1px 0',
   textAlign: 'center',
-  zIndex: 999,
+  zIndex: 99,
   backgroundColor: '#FFF'
 }
 
