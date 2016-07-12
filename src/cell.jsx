@@ -33,20 +33,37 @@ export default class Cell extends React.Component {
   }
 
   constructor(props) {
-    super(props)
-    this.state = { cellWidth: 0 }
+    super(props);
+    this.state = { cellWidth: 0 };
   }
 
   componentDidMount() {
-    const node = findDOMNode(this),
-          rect = node.getBoundingClientRect(),
-          cellWidth = rect.width + 2
+    const node = findDOMNode(this);
+    const rect = node.getBoundingClientRect();
+    const cellWidth = rect.width + 2;
 
-    this.setState({ cellWidth })
+    this.setState({ cellWidth });
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    //if (this.state.cellWidth !== nextState.cellWidth) { shouldUpdate = true }
+    //if (nextProps.resource !== this.props.resource) { shouldUpdate = true }
+    //if (nextProps.date !== this.props.date) { shouldUpdate = true }
+    //if (nextProps.children && !this.props.children) { shouldUpdate = true }
+
+    if (!this.areObjectsEqual(this.props.children, nextProps.children)) { return true }
+
+    return false;
+  }
+
+  areObjectsEqual(first = {}, second = {}) {
+    return Object.keys(first).reduce((prev, curr) => {
+      if (first[curr] !== second[curr]) { return false }
+    }, true);
   }
 
   render() {
-    const { children, connectDropTarget, onClick } = this.props
+    const { children, connectDropTarget, onClick } = this.props;
 
     return (
       connectDropTarget(

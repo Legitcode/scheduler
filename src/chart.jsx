@@ -29,6 +29,26 @@ export default class Chart extends Component {
     width: PropTypes.number.isRequired
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = true;
+
+    // First test to see if the resources are exactly the same
+    if (nextProps.resources.equals(this.props.resources)) { shouldUpdate = false }
+
+    // Now let's look at the events and see if they are different
+    nextProps.events.forEach((event, idx) => {
+      if (!this.areObjectsEqual(event, this.props.events[idx])) { shouldUpdate = true }
+    })
+
+    return shouldUpdate;
+  }
+
+  areObjectsEqual(first, second) {
+    return Object.keys(first).reduce((prev, curr) => {
+      if (first[curr] !== second[curr]) { return false }
+    }, true);
+  }
+
   renderEvent(resource, date) {
     const { rowHeight, eventChanged, eventResized, eventClicked } = this.props
     const currentEvent = this.props.events.find(event => {

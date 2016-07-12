@@ -25,15 +25,13 @@ class RangeSelector extends Component {
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    if (this.state.rightCursor === nextState.rightCursor) {
-      return false;
-    }
+    if (nextProps.rangeDidChange) { return true }
+    return !this.areCursorsEqual(this.state, nextState);
+  }
 
-    if (this.state.leftCursor === nextState.leftCursor) {
-      return false;
-    }
-
-    return true;
+  areCursorsEqual(currentState, nextState) {
+    return currentState.rightCursor === nextState.rightCursor &&
+      currentState.leftCursor === nextState.leftCursor
   }
 
   componentWillReceiveProps(nextProps) {
