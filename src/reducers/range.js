@@ -15,23 +15,23 @@ export default (state = defaultState, action) => {
   let newRange
 
   switch(action.type) {
-    case 'setRange':
-      return state.setIn(['range'], action.range)
-    case 'advanceRange':
-      newRange = state.get('range').advance()
-      return state.withMutations(map => {
-        map.set('range', newRange).
-          set('rangeDidChange', true)
-      })
-    case 'retardRange':
-      newRange = state.get('range').advance(true)
-      return state.withMutations(map => {
-        map.set('range', newRange).
-          set('rangeDidChange', true)
-      })
-    case 'clearRangeFlag':
-      return state.setIn(['rangeDidChange'], false)
-    default:
-      return state
+  case 'setRange':
+    return state.setIn(['range'], action.range)
+  case 'advanceRange':
+    newRange = state.get('range').advance()
+    return state.withMutations(map => {
+      map.set('range', newRange).
+        set('rangeDidChange', true)
+    })
+  case 'retardRange':
+    newRange = state.get('range').advance(true)
+    return state.withMutations(map => {
+      map.set('range', newRange).
+        set('rangeDidChange', true)
+    })
+  case 'clearRangeFlag':
+    return state.setIn(['rangeDidChange'], false)
+  default:
+    return state
   }
 }

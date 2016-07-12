@@ -24,6 +24,18 @@ class RangeSelector extends Component {
     this.state = {}
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    if (this.state.rightCursor === nextState.rightCursor) {
+      return false;
+    }
+
+    if (this.state.leftCursor === nextState.leftCursor) {
+      return false;
+    }
+
+    return true;
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.rangeDidChange) {
       this.props.dispatch(clearRangeFlag())

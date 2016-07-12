@@ -1,17 +1,18 @@
 // Vendor Libraries
-import React, { PropTypes, Component } from 'react'
-import { DragDropContext } from 'react-dnd'
-import HTML5Backend from 'react-dnd-html5-backend'
-import 'legit-rubyfill/array/each_slice'
+import React, { PropTypes, Component } from 'react';
+import { DragDropContext } from 'react-dnd';
+import HTML5Backend from 'react-dnd-html5-backend';
+import 'legit-rubyfill/array/each_slice';
+import 'legit-rubyfill/array/equals';
 
 // Local Libraries
-import Event from './event'
-import PartialEvent from './partial_event'
-import Cell from './cell'
-import RangeDate from './range_date'
+import Event from './event';
+import PartialEvent from './partial_event';
+import Cell from './cell';
+import RangeDate from './range_date';
 
 // Styles
-import { chart, cellWrapper } from './styles'
+import { chart, cellWrapper } from './styles';
 
 @DragDropContext(HTML5Backend)
 export default class Chart extends Component {
@@ -93,11 +94,11 @@ export default class Chart extends Component {
     )
   }
 
-  renderRow(resource) {
+  renderRow(resource, idx) {
     const { range, width } = this.props
 
     return (
-      <div className='row-wrapper' style={{ width: `${width * 0.95}px`, display: 'flex' }}>
+      <div key={idx} className='row-wrapper' style={{ width: `${width * 0.95}px`, display: 'flex' }}>
         { range.map(date => this.renderCell(resource, date.toRef())) }
       </div>
     )
@@ -107,8 +108,8 @@ export default class Chart extends Component {
     const { resources } = this.props,
           rows = []
 
-    resources.forEach(resource => {
-      rows.push(this.renderRow(resource))
+    resources.forEach((resource, idx) => {
+      rows.push(this.renderRow(resource, idx))
     })
 
     return rows

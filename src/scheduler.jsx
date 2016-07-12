@@ -31,10 +31,10 @@ const promiseMiddleware = store => next => action => {
     if (nextAction) {
       next({ ...rest, type: action.nextAction, range: state.range.toJS().range, resources: state.event.toJS().resources })
     } else {
-      let id = action.event.id,
-          index = state.event.get('events').findIndex(i => i.get('id') === id)
+      let id = action.event.id;
+      let index = state.event.get('events').findIndex(i => i.get('id') === id);
 
-      callback(state.event.getIn(['events', index]).toJS())
+      callback(state.event.getIn(['events', index]).toJS());
     }
   }).
   catch(ex => {
