@@ -69,7 +69,7 @@ class RangeSelector extends Component {
           onClick={::this.previousClicked}
           onMouseOver={this.addLeftHover}
           onMouseLeave={this.removeLeftHover}>
-          <div style={leftButtonAfter}></div>
+          <div className='selector-left-arrow' style={leftButtonAfter}></div>
         </div>
         <div className='selector-range' style={{ display: 'inline-block' }}>
           { range.toString() }
@@ -80,7 +80,7 @@ class RangeSelector extends Component {
           onClick={::this.nextClicked}
           onMouseOver={this.addRightHover}
           onMouseLeave={this.removeRightHover}>
-          <div style={rightButtonAfter}></div>
+          <div className='selector-right-arrow' style={rightButtonAfter}></div>
         </div>
       </div>
     )

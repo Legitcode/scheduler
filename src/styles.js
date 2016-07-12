@@ -9,7 +9,8 @@ export const leftButton = {
   display: 'inline-block',
   width: '2em',
   height: '2em',
-  border: '0.25em solid darkgrey',
+  borderWidth: '0.25em',
+  borderStyle: 'solid',
   borderRadius: '50%',
   verticalAlign: 'middle'
 }
@@ -21,8 +22,10 @@ export const leftButtonAfter = {
   left: '0.5em',
   width: '0.7em',
   height: '0.7em',
-  borderTop: '0.25em solid darkgrey',
-  borderRight: '0.25em solid darkgrey',
+  borderTopStyle: 'solid',
+  borderTopWidth: '0.25em',
+  borderRightStyle: 'solid',
+  borderRightWidth: '0.25em',
   transform: 'rotate(-135deg)'
 }
 
@@ -32,7 +35,8 @@ export const rightButton = {
   display: 'inline-block',
   width: '2em',
   height: '2em',
-  border: '0.25em solid darkgrey',
+  borderWidth: '0.25em',
+  borderStyle: 'solid',
   borderRadius: '50%',
   verticalAlign: 'middle'
 }
@@ -44,8 +48,10 @@ export const rightButtonAfter = {
   right: '0.5em',
   width: '0.7em',
   height: '0.7em',
-  borderTop: '0.25em solid darkgrey',
-  borderLeft: '0.25em solid darkgrey',
+  borderTopWidth: '0.25em',
+  borderTopStyle: 'solid',
+  borderLeftWidth: '0.25em',
+  borderLeftStyle: 'solid',
   transform: 'rotate(135deg)'
 }
 

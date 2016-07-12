@@ -1,0 +1,111 @@
+/* The wrapper for the date selector */
+.selector-holder {
+  border: solid 1px lightgrey;
+  padding: 15px;
+  border-radius: 5px;
+}
+
+/* The left selector container for the date range picker */
+.selector-holder > .selector-left {
+  background-color: blue;
+  border-color: cyan;
+}
+
+/* The arrow on the left selector */
+.selector-holder > .selector-left > .selector-left-arrow {
+  background-color: blue;
+  border-color: cyan;
+}
+
+/* The right selector container for the date range picker */
+.selector-holder > .selector-right {
+  background-color: blue;
+  border-color: cyan;
+}
+
+/* The arrow on the right selector */
+.selector-holder > .selector-right > .selector-right-arrow {
+  background-color: blue;
+  border-color: cyan;
+}
+
+/* The date range in between the selectors */
+.selector-holder > .selector-range {
+  font-size: 1.5em;
+  font-weight: 700em;
+}
+
+/* The wrapper for the entire scheduler layout */
+.layout-wrapper {
+
+}
+
+/* The wrapper for the scheduler header */
+.layout-wrapper > .header-wrapper {
+
+}
+
+/* The wrapper for the header cells */
+.layour-wrapper > .header-wrapper > .header-cell-holder {
+
+}
+
+/* The actual header cell */
+.layour-wrapper > .header-wrapper > .header-cell-holder > .header-cell {
+
+}
+
+/* The wrapper for the resource chart */
+.layout-wrapper > .chart-wrapper {
+
+}
+
+/* The wrapper for the resource column */
+.layout-wrapper > .chart-wrapper > .resource-wrapper {
+
+}
+
+/* The resource cells */
+.layout-wrapper > .chart-wrapper > .resource-wrapper > .resource-cell {
+
+}
+
+/* The wrapper for the chart section */
+.layout-wrapper > .chart-wrapper > .chart {
+
+}
+
+/* The holder for rows in the chart */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper {
+
+}
+
+/* The wrapper for the chart cell */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper {
+
+}
+
+/* The actual chart cell */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper > .cell {
+
+}
+
+/* The box that holds the event */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper > .cell > .event-box {
+
+}
+
+/* The actual event */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper > .cell > .event-box > .event {
+
+}
+
+/* The handle that is draggable on the event */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper > .cell > .event-box > .event > .event-handle {
+
+}
+
+/* The resizer handle */
+.layout-wrapper > .chart-wrapper > .chart > .row-wrapper > .cell-wrapper > .cell > .event-box > .resizer {
+
+}
