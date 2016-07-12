@@ -31,5 +31,5 @@ module.exports = {
   plugins: [
     new webpack.NoErrorsPlugin()
   ],
-  devtool: "eval-source-map"
+  devtool: "cheap-source-map"
 };

@@ -1,10 +1,12 @@
-import React from 'react'
-import { render } from 'react-dom'
-import Scheduler from '../src/scheduler'
-import RangeDate from '../src/range_date'
-import DateRange from '../src/date_range'
-import Perf from 'react-addons-perf'
-window.Perf = Perf
+import React from 'react';
+import { render } from 'react-dom';
+import Scheduler from '../src/scheduler';
+import RangeDate from '../src/range_date';
+import DateRange from '../src/date_range';
+import { whyDidYouUpdate } from 'why-did-you-update';
+
+// Uncomment this to examine where you can get performance boosts
+//whyDidYouUpdate(React);
 
 var resources = ['One', 'Two', 'Three', 'Four', 'Five', 'Six', 'Seven', 'Eight', 'Nine', 'Ten'],
     today = new RangeDate(new Date()),

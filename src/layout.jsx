@@ -1,6 +1,7 @@
 // Vendor Libraries
 import React, { PropTypes, Component } from 'react'
 import { connect } from 'react-redux'
+import 'legit-rubyfill/array/equals';
 
 // Local Libraries
 import Chart from './chart'
@@ -22,6 +23,15 @@ class Layout extends Component {
     rangeDidChange: PropTypes.bool.isRequired,
     width: PropTypes.number.isRequired,
     rowHeight: PropTypes.number.isRequired
+  }
+
+  shouldComponentUpdate(nextProps, nextState) {
+    let shouldUpdate = true;
+
+    //if (nextProps.resources.equals(this.props.resources)) { shouldUpdate = false }
+    //if (nextProps.events.length !== this.props.events.length) { shouldUpdate = true }
+
+    return shouldUpdate;
   }
 
   render() {
