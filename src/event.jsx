@@ -72,11 +72,14 @@ class Event extends React.Component {
     this.state = {}
   }
 
-  componentDidMount() {
+  componentWillMount() {
     const { duration, cellWidth } = this.props,
           width = (duration * cellWidth) === 0 ? cellWidth : (duration * cellWidth) - duration - 9
 
     this.setState({ cellWidth, width, startWidth: width })
+  }
+
+  componentDidMount() {
     this.refs.resizer.addEventListener('mousedown', this.initDrag, false)
   }
 
@@ -145,15 +148,15 @@ class Event extends React.Component {
     return (
       <div className='event-box' style={boxStyleMerge}>
         { isDragging ? null :
-        connectDragPreview(
-          <div key={id} className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
-            { connectDragSource(
-                <span style={eventHandleStyles} className='event-handle'></span>
-              )
-            }
-            {title}
-          </div>
-        )
+          connectDragPreview(
+            <div key={id} className='event' style={eventStyleMerge} onClick={::this.dispatchEventClick}>
+              { connectDragSource(
+                  <span style={eventHandleStyles} className='event-handle'></span>
+                )
+              }
+              {title}
+            </div>
+          )
         }
         <span className='resizer' style={resizerStyleMerge} ref='resizer'></span>
       </div>
