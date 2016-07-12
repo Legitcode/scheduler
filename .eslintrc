@@ -1,17 +1,17 @@
 {
   "parser": "babel-eslint",
-  "env": {
-    "es6": true
-  },
-  "ecmaFeatures": {
-    "blockBindings": true,
-    "forOf": true,
-    "jsx": true,
-    "modules": true
+  "parserOptions": {
+    "ecmaVersion": 6,
+    "sourceType": "module",
+    "ecmaFeatures": {
+      "blockBindings": true,
+      "forOf": true,
+      "jsx": true
+    }
   },
   "rules": {
     "no-underscore-dangle": 0,
-    "indent": [2, 2],
+    "indent": ["error", 2, { "VariableDeclarator": { "var": 2, "let": 2, "const": 3 } }],
     "max-len": 0,
     "semi": 0,
     "quotes": 0,
