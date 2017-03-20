@@ -38,8 +38,7 @@ export default class Cell extends React.Component {
   }
 
   componentDidMount() {
-    const node = findDOMNode(this);
-    const rect = node.getBoundingClientRect();
+    const rect = this.refs.cell.getBoundingClientRect();
     const cellWidth = rect.width + 2;
 
     this.setState({ cellWidth });
@@ -67,7 +66,7 @@ export default class Cell extends React.Component {
 
     return (
       connectDropTarget(
-        <div className='cell' style={cell} onClick={onClick}>
+        <div className='cell' ref="cell" style={cell} onClick={onClick}>
           { React.Children.map(children, child => React.cloneElement(child, this.state)) }
         </div>
       )
