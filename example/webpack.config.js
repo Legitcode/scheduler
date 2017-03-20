@@ -17,13 +17,13 @@ module.exports = {
     sourceMapFilename: '[name].map'
   },
   resolve: {
-    extensions: ['', '.js', '.jsx', '.es6'],
-    modulesDirectories: ['node_modules']
+    extensions: ['*', '.js', '.jsx', '.es6'],
+    modules: ['node_modules']
   },
   module: {
     loaders: [
-      { test: /\.jsx$|\.es6$|\.js$/, loaders: ['react-hot', 'babel-loader?stage=0'], exclude: /node_modules/ },
-      { test: /\.scss$|\.css$/, loader: 'style-loader!style!css!sass' },
+      { test: /\.jsx$|\.es6$|\.js$/, loaders: ['react-hot-loader', 'babel-loader'], exclude: /node_modules/ },
+      { test: /\.scss$|\.css$/, loader: 'style-loader!style-loader!css-loader!sass-loader' },
       { test: /\.(jpe?g|png|gif)$/i, loader: 'url?limit=10000!img?progressive=true' },
       { test: /\.json/, loader: 'json-loader' }
     ]
