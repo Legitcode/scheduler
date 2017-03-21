@@ -1,8 +1,6 @@
 /* globals global */
 
-require("babel/register")({
-  stage: 0
-});
+require('babel-core/register')();
 
 function propagateToGlobal (window) {
   for (let key in window) {
@@ -13,7 +11,7 @@ function propagateToGlobal (window) {
   }
 }
 
-var jsdom = require('node-jsdom');
+var jsdom = require('jsdom');
 
 var doc = jsdom.jsdom('<!doctype html><html><body></body></html>');
 var win = doc.defaultView;
