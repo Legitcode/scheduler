@@ -4,11 +4,9 @@
   "description": "A React drag and drop scheduler component",
   "main": "lib/index.js",
   "scripts": {
-    "prepublish": "npm run compile",
     "test": "mocha --opts ./mocha.opts; eslint ./src/ --ext .jsx,.js --global require,exports:true",
     "compile": "babel src --ignore __tests__ --stage 0 --out-dir lib; node-sass src/css/default.scss lib/css/default.css",
-    "example": "webpack-dev-server --config ./example/webpack.config.js --hot",
-    "push": "npm run compile; npm publish ./"
+    "example": "webpack-dev-server --config ./example/webpack.config.js --hot"
   },
   "author": "Darin Haener <dphaener@gmail.com> (https://github.com/dphaener)",
   "license": "MIT",
@@ -40,6 +38,7 @@
   },
   "devDependencies": {
     "babel": "6.23.0",
+    "babel-cli": "^6.24.0",
     "babel-core": "6.24.0",
     "babel-eslint": "7.1.1",
     "babel-loader": "6.4.1",
