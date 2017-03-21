@@ -10,7 +10,7 @@ describe('Scheduler component', () => {
       let expectedFrom = new RangeDate(new Date()),
           expectedTo = expectedFrom.advance('weeks', 4)
 
-      Test(<Scheduler resources={[]} events={[]} />).
+      Test(<Scheduler resources={[]} events={[]} width={100} />).
       test(({ instance }) => {
         expect(instance.props.from.toString()).to.eq(expectedFrom.toString())
         expect(instance.props.to.toString()).to.eq(expectedTo.toString())
