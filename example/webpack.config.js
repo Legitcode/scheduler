@@ -29,7 +29,7 @@ module.exports = {
     ]
   },
   plugins: [
-    new webpack.NoErrorsPlugin()
+    new webpack.NoEmitOnErrorsPlugin()
   ],
   devtool: "cheap-source-map"
 };
