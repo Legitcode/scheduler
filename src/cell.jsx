@@ -1,6 +1,6 @@
 // Vendor Libraries
-import React, { PropTypes } from 'react'
-import { findDOMNode } from 'react-dom'
+import React from 'react'
+import PropTypes from 'prop-types';
 import { DropTarget } from 'react-dnd'
 
 // Local LIbraries

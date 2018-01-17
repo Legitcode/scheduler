@@ -1,5 +1,6 @@
 // Vendor Libraries
-import React, { PropTypes, Component } from 'react'
+import React, { Component } from 'react'
+import PropTypes from 'prop-types';
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { batchActions, enableBatching } from 'redux-batched-actions'

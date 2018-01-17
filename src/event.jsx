@@ -1,5 +1,6 @@
 // Vendor Libraries
-import React, { PropTypes } from 'react'
+import React from 'react'
+import PropTypes from 'prop-types';
 import { DragSource } from 'react-dnd'
 import { connect } from 'react-redux'
 
